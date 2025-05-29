@@ -6,7 +6,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-db.sync({force:true}).then(()=>{
+db.sync({force:false}).then(()=>{
     app.listen(3000,()=>{
         console.log('server is running on port 3000');
     })
