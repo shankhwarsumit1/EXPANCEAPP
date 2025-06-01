@@ -12,7 +12,11 @@ window.addEventListener('DOMContentLoaded', () => {
         };
         try {
             const response = await axios.post(REST_API, user);
+            if(response.data.success){
+                window.location.href = "../expenceAdd/addExpence.html";
+            }else{
             alert(response.data.message);
+            }
         } catch (err) {
             if (err.response.data.message) {
                 alert(err.response.data.message);
