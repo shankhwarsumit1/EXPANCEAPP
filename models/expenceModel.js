@@ -1,4 +1,4 @@
-const {DataTypes} = require('sequelize');
+const {DataTypes, INTEGER} = require('sequelize');
 const sequelize = require('../utils/db-connection');
 
 const expenceModel = sequelize.define('expence',{
@@ -16,6 +16,10 @@ const expenceModel = sequelize.define('expence',{
     },
     category:{
         type:DataTypes.STRING,
+    },
+    userId:{
+        type:INTEGER,
+        allowNull:false  
     }
 })
 

@@ -1,8 +1,11 @@
 const userModel = require('../models/user');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
+const securityKey = 'sumit';
 
-
-
+function generateAccessToken(id,name){
+  return jwt.sign({userId : id, name:name},securityKey);
+}
 
 const signup = async (req, res) => {
   try {
@@ -39,7 +42,8 @@ const login = async (req, res) => {
     if (result) {
       res.status(200).json({
         success: true,
-        message: "user login successfull"
+        message: "user login successfull",
+        token: generateAccessToken(user.id,user.name)
       });
     } else {
       res.status(401).json({

@@ -13,6 +13,7 @@ window.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await axios.post(REST_API, user);
             if(response.data.success){
+                localStorage.setItem('token',response.data.token);
                 window.location.href = "../expenceAdd/addExpence.html";
             }else{
             alert(response.data.message);

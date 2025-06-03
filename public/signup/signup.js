@@ -11,6 +11,7 @@ window.addEventListener('DOMContentLoaded',()=>{
                password:event.target.password.value
           };
           await axios.post(REST_API,user);
+          window.location.href = '../login/login.html';
           form.reset();
         }
         catch(err){
