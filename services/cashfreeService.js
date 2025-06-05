@@ -1,47 +1,43 @@
-const { Cashfree, CFEnvironment } = require('cashfree-pg');
+const { Cashfree,CFEnvironment } = require('cashfree-pg');
 
 const cashfree = new Cashfree(
-    CFEnvironment.SANDBOX, // or CFEnvironment.PRODUCTION
-    process.env.CASHFREE_APIID,
-    process.env.CASHFREE_SECRETKEY
+CFEnvironment.SANDBOX,
+process.env.CASHFREE_APIID,
+process.env.CASHFREE_SECRETKEY
 );
 
-exports.createOrder = async (
+
+exports.createOrder=async (
     orderId,
     orderAmount,
-    orderCurrency = "INR",
+    orderCurrency="IND",
     customerId,
-    customerPhone,
-    customerEmail,
-    customerName
-) => {
-    try {
-        const expiryDate = new Date(Date.now() + 60 * 60 * 1000);
-        const formattedExpiryDate = expiryDate.toISOString();
-
-        const request = {
+    customerPhone
+)=>{
+    try{
+          const expiryDate= new Date(Date.now()+60*60*1000);//1 hour from now
+          const formattedExpiryDate = expiryDate.toISOString();
+       
+          const request = {
             order_amount: orderAmount,
-            order_currency: orderCurrency,
-            order_id: orderId,
-            customer_details: {
-                customer_id: customerId,
-                customer_phone: customerPhone,
-                customer_email: customerEmail,
-                customer_name: customerName
+            order_currency:orderCurrency,
+            order_id:orderId,
+            
+            customer_details:{
+                customer_id:customerId,
+                customer_phone:customerPhone
             },
             order_meta: {
-                return_url: `http://localhost:3000/payment-status/${orderId}`,
-                payment_methods: "cc, upi, nb"
+                return_url:`http://localhost:3000/payment-status/${orderId}`,
+                payment_methods:"ccc, upi, nb"
             },
-            order_expiry_time: formattedExpiryDate,
-        };
-
-        const response = await cashfree.PGCreateOrder(request);
-        return response.data.payment_session_id;
-    } catch (error) {
-        // Log the full error response for debugging
-        console.error("Error creating order:", error.response ? error.response.data : error.message);
-        throw error;
+            order_expiry_time: formattedExpiryDate,};
+            const response = await cashfree.PGCreateOrder(request);
+            return response.data.payment_session_id;
+          
+        }
+    catch(error){
+        console.error("Error creating order:",error.message);
     }
 };
 
@@ -75,34 +71,4 @@ exports.getPaymentStatus = async (orderId) => {
         console.error("Error fetching order status:", error.message);
       }
     };
-
-const cashfree = Cashfree({
-    mode: "sandbox",
-});
-
-document.getElementById("renderBtn").addEventListener("click", async () => {
-  try {
-    const response = await fetch("http://localhost:3000/pay/paynow", {
-      method: "POST",
-    });
-
-    const data = await response.json();
-    const paymentSessionId = data.paymentSessionId;
-
-    if (!paymentSessionId) {
-      alert("Payment session could not be created. Please try again.");
-      return;
-    }
-
-    let checkoutOptions = {
-        paymentSessionId: paymentSessionId,
-        redirectTarget: "_self",
-    };
-
-    await cashfree.checkout(checkoutOptions);
-
-  } catch (err) {
-    console.error("Error:", err);
-  }
-});
 
