@@ -6,7 +6,6 @@ const cfConfig = {
   clientSecret: process.env.CASHFREE_SECRETKEY,
 };
 
-const pg = new PG(cfConfig);
 
 exports.createOrder = async (
   orderId,
