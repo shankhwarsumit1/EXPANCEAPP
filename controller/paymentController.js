@@ -61,16 +61,8 @@ exports.premiumLeaderboard = async (req, res) => {
   try {
     const leaderboard = await User.findAll({
       where: { isPremium: true },
-      include: [{
-        model: Expense,
-        attributes: []
-      }],
-      attributes: [
-        'id', 'name', 'email',
-        [require('sequelize').fn('COUNT', require('sequelize').col('expences.id')), 'expenseCount']
-      ],
-      group: ['user.id'],
-      order: [[require('sequelize').literal('expenseCount'), 'DESC']]
+      attributes: ['id', 'name', 'email', 'totalExpense'],
+      order: [['totalExpense', 'DESC']]
     });
     res.json(leaderboard);
   } catch (error) {

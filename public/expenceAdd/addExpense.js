@@ -56,7 +56,7 @@ window.addEventListener('DOMContentLoaded', async (e) => {
                 lbDiv.innerHTML = "<h3>Premium Leaderboard</h3>" +
                     "<ol>" +
                     leaderboard.map(user =>
-                        `<li>${user.name} (${user.email}) - Expenses: ${user.expenseCount}</li>`
+                        `<li>${user.name} (${user.email}) - Total Expense: ₹${user.totalExpense.toFixed(2)}</li>`
                     ).join('') +
                     "</ol>";
             });

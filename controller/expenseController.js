@@ -1,13 +1,20 @@
 const expenseModel = require('../models/expenceModel');
+const userModel = require('../models/user');
 
 const addExpense = async (req,res)=>{
     try{
          const addedExpense = await expenseModel.create({...req.body,userId: req.user.id});
+
+        // Update user's totalExpense
+        const user = await userModel.findByPk(req.user.id);
+        user.totalExpense += parseFloat(addedExpense.amount);
+        await user.save();
+
          res.status(201).json(addedExpense);
     }
     catch(err){
         console.log(err);
-        res.status(500).send('inernal server error');
+        res.status(500).send('internal server error');
         }
     }
 
@@ -23,11 +30,19 @@ const getExpense = async (req,res)=>{
 
 const delExpense = async(req,res)=>{
     try{
-      const delExp = await expenseModel.destroy({where:{id:req.params.id, userId: req.user.id}});
-      console.log(delExp);
-      if(delExp===0){
-        return res.status(401).josn({success:false,message:'expense not found or not authorized'})
-      }
+        const expense = await expenseModel.findOne({ where: { id: req.params.id, userId: req.user.id } });
+        if (!expense) {
+            return res.status(401).json({ success: false, message: 'expense not found or not authorized' });
+        }
+
+        // Update user's totalExpense
+        const user = await userModel.findByPk(req.user.id);
+        user.totalExpense -= parseFloat(expense.amount);
+        if (user.totalExpense < 0) user.totalExpense = 0;
+        await user.save();
+
+        await expense.destroy();
+
       res.status(200).json({success:true,message:'expense deleted'});
     }
     catch(err){
