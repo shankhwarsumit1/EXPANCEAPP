@@ -1,7 +1,7 @@
-const userModel = require('./user');
-const expenseModel = require('./expenceModel');
+const User = require('./user');
+const Expense = require('./expenceModel');
 
-userModel.hasMany(expenseModel,{foreignKey:'userId'});
-expenseModel.belongsTo(userModel,{foreignKey:'userId'});
+User.hasMany(Expense, { foreignKey: 'userId' });
+Expense.belongsTo(User, { foreignKey: 'userId' });
 
-module.exports = {userModel,expenseModel}
+module.exports = { User, Expense };
