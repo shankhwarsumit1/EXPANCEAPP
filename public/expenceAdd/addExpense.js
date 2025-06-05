@@ -5,6 +5,12 @@ const REST_API = "http://localhost:3000/expense/addExpense";
 const form = document.querySelector('form');
 const expenseList = document.querySelector('ul');
 const token = localStorage.getItem('token');
+const premium = document.getElementById('premium');
+
+premium.addEventListener('click',async (e)=>{
+    window.location.href = "http://localhost:3000/pay";
+});
+
 (async ()=>{
    try{  
          const res = await getExpense();
