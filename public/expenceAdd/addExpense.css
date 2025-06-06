@@ -1,0 +1,83 @@
+body {
+    background: linear-gradient(135deg, #b24592 0%, #f15f79 100%);
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+.container {
+    background: #fff;
+    max-width: 700px;
+    margin: 30px auto 0 auto;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+    padding: 30px 30px 80px 30px;
+    position: relative;
+}
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+header h2 {
+    color: #3b3b3b;
+    margin: 0;
+}
+.datetime {
+    color: #888;
+    font-size: 0.95em;
+    margin-top: 4px;
+}
+.report-section {
+    margin-top: 10px;
+}
+#month-report, #yearly-report, #notes-report {
+    margin-bottom: 25px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+    background: #f8f8f8;
+    border-radius: 8px;
+    overflow: hidden;
+}
+th, td {
+    padding: 8px 10px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+th {
+    background: #e0e0e0;
+    color: #333;
+}
+tfoot td {
+    font-weight: bold;
+    color: #2e7d32;
+}
+tfoot td.expense {
+    color: #c62828;
+}
+#download-btn {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #4caf50;
+    color: #fff;
+    font-size: 2.2em;
+    border: none;
+    box-shadow: 0 4px 16px rgba(76,175,80,0.2);
+    cursor: pointer;
+    transition: background 0.2s;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#download-btn:disabled {
+    background: #bdbdbd;
+    cursor: not-allowed;
+}
