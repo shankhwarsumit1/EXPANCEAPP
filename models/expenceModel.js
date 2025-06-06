@@ -20,6 +20,10 @@ const expenceModel = sequelize.define('expence',{
     userId:{
         type:INTEGER,
         allowNull:false  
+    },
+    note: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 })
 
