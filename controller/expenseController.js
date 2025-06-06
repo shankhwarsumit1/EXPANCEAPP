@@ -61,4 +61,25 @@ const delExpense = async (req, res) => {
     }
 };
 
+exports.getExpenses = async (req, res) => {
+    try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const offset = (page - 1) * limit;
+        const userId = req.user.id;
+
+        const { count: totalCount, rows: expense } = await expenseModel.findAndCountAll({
+            where: { userId },
+            limit,
+            offset,
+            order: [['createdAt', 'DESC']],
+        });
+
+        res.status(200).json({ expense, totalCount });
+    } catch (err) {
+        console.error("Pagination fetch error:", err);
+        res.status(500).json({ message: "Failed to fetch expenses", error: err });
+    }
+};
+
 module.exports = { addExpense, getExpense, delExpense };
