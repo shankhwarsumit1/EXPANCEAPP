@@ -4,6 +4,7 @@ const db = require('./utils/db-connection');
 const userRouter = require('./router/userRouter');
 const expenceRouter = require('./router/expenceRouter');
 const cashfreeRouter = require('./router/cashfreeRouter')
+const passwordRouter = require('./router/passwordRouter');
 const path = require('path');
 require('./models');
 const cors = require('cors');
@@ -29,6 +30,7 @@ console.log('Cashfree credentials loaded:', {
 app.use('/user',userRouter);
 app.use('/expense',expenceRouter);
 app.use('/pay',cashfreeRouter);
+app.use('/password', passwordRouter);
 const paymentController = require('./controller/paymentController');
 app.get('/payment-status/:orderId', paymentController.getPaymentStatusid);
 console.log(process.env.CASHFREE_APIID, process.env.CASHFREE_SECRETKEY);
