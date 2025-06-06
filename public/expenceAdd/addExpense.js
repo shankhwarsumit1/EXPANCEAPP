@@ -9,10 +9,11 @@ window.addEventListener('DOMContentLoaded', async () => {
   const pageInfo = document.getElementById('page-info');
   const prevPageBtn = document.getElementById('prev-page');
   const nextPageBtn = document.getElementById('next-page');
+  const pageSizeSelect = document.getElementById('page-size');
 
   let isPremium = false;
   let currentPage = 1;
-  const limit = 10;
+  let limit = parseInt(pageSizeSelect?.value) || 10;
   let totalPages = 1;
 
   function parseJwt(token) {
@@ -92,7 +93,14 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
+  pageSizeSelect.addEventListener('change', () => {
+    limit = parseInt(pageSizeSelect.value) || 10;
+    currentPage = 1;
+    loadExpenses(currentPage);
+  });
+
   async function loadExpenses(page) {
+    limit = parseInt(pageSizeSelect.value) || 10;
     try {
       const res = await axios.get(`${REST_API}?page=${page}&limit=${limit}`, {
         headers: { Authorization: token }
