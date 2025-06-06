@@ -1,7 +1,10 @@
 const express = require('express');
 const db = require('./utils/db-connection');
+require('dotenv').config();
+
 const userRouter = require('./router/userRouter');
 const expenceRouter = require('./router/expenceRouter');
+const paymentRouter = require('./router/paymentRouter');
 require('./models');
 const cors = require('cors');
 const app = express();
@@ -12,6 +15,7 @@ app.use(express.json());
 
 app.use('/user',userRouter);
 app.use('/expense',expenceRouter);
+app.use('/payment',paymentRouter);
 
 db.sync({force:false}).then(()=>{
     app.listen(3000,()=>{

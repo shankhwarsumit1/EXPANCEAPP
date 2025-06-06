@@ -5,6 +5,8 @@ const REST_API = "http://localhost:3000/expense/addExpense";
 const form = document.querySelector('form');
 const expenseList = document.querySelector('ul');
 const token = localStorage.getItem('token');
+const premium = document.querySelector('#premium');
+
 (async ()=>{
    try{  
          const res = await getExpense();
@@ -17,6 +19,10 @@ const token = localStorage.getItem('token');
    }
 })();
 
+premium.addEventListener('click',(e)=>{
+    e.preventDefault();
+    window.location.href='../payment/paymentlanding.html';
+})
 
 form.addEventListener('submit',async (event)=>{
     event.preventDefault();

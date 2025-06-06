@@ -1,0 +1,19 @@
+[33m6370962[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m migration
+[33m09751ba[m dynamic pagination
+[33ma852b48[m pagination
+[33m44b8e86[m ui
+[33m9c01e4d[m password
+[33m048217f[m mail
+[33m1ecb9ad[m implemented transaction
+[33m8ef0417[m added total expense
+[33me6bc4a8[m leaderboard
+[33m85cfd30[m new
+[33mae2d7d2[m payment
+[33m3ccbc21[m payments
+[33mf0f7718[m autherization,authentication
+[33m81f4d5a[m added expense page
+[33m5bce9da[m password encryption
+[33mac314e5[m login backend
+[33ma16a05a[m login frontend
+[33m773b3de[m backend of signup post
+[33m33bc8ce[m first

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cashfree Checkout</title>
+    <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
+
+<style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+      }
+
+      h1 {
+        color: #333;
+      }
+
+      .card {
+        width: 600px;
+        padding: 20px;
+        background: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        text-align: center;
+      }
+
+      button {
+        padding: 10px 15px;
+        border: none;
+        background: #5cb85c;
+        color: #fff;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+    </style>
+</head>
+<body>
+    <header><h1>Cashfree Checkout Integration</h1></header>
+    
+    <div class="card">
+        <h3>click below to open the checkout page</h3>
+        <button id="renderBtn">Pay Now</button>
+    </div>
+    <script src="../cashfreeWeb_self.js"></script>
+</body>
+</html>
