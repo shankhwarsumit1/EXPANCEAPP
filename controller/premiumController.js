@@ -4,20 +4,7 @@ const {fn,col,literal} =require('sequelize');
 
 exports.showLeaderBoard = async(req,res)=>{
     try{
-    const results = await userModel.findAll({
-        attributes:[
-            'name',
-            [fn('SUM',col('expences.amount')),'totalExpense']
-        ],
-        include:[
-            {
-                model:expenseModel,
-                attributes:[],
-                required:false
-            }],
-            group:['user.id','user.name'],
-            order:[[literal('totalExpense'),'DESC']]
-    });
+    const results = await userModel.findAll();
     res.status(200).json(results);
 
     }

@@ -27,6 +27,7 @@ const leaderList = document.getElementById('leaderList');
     }
 })();
 
+//displaying expenses on reloading
 (async ()=>{
    try{  
          const res = await getExpense();
@@ -39,6 +40,7 @@ const leaderList = document.getElementById('leaderList');
    }
 })();
 
+//display leaders on leaderboard button click
 leaderBoardButton.addEventListener('click',async(e)=>{
    e.preventDefault();
    try{
@@ -57,6 +59,7 @@ leaderBoardButton.addEventListener('click',async(e)=>{
    }
 })
 
+//leaderboard display function
 function displayLeaderboard(lead){
  const singleLeader = document.createElement('li');
  singleLeader.innerHTML = `Name - ${lead.name} TotalExpense - ${lead.totalExpense}`;
@@ -68,6 +71,7 @@ Buypremium.addEventListener('click',(e)=>{
     window.location.href='../payment/paymentlanding.html';
 })
 
+//add expenses
 form.addEventListener('submit',async (event)=>{
     event.preventDefault();
     const expense = {
@@ -81,6 +85,7 @@ form.addEventListener('submit',async (event)=>{
     window.location.reload();
 })
 
+//display expenses
 function display(newExpense){
  const singleExpense = document.createElement('li');
  singleExpense.innerHTML = `${newExpense.amount} ${newExpense.description} ${newExpense.category} <Button type="click" id="del">DELETE</Button>`
