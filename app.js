@@ -5,6 +5,7 @@ require('dotenv').config();
 const userRouter = require('./router/userRouter');
 const expenceRouter = require('./router/expenceRouter');
 const paymentRouter = require('./router/paymentRouter');
+const premiumRouter = require('./router/premiumRouter');
 require('./models');
 const cors = require('cors');
 const app = express();
@@ -15,6 +16,7 @@ app.use(express.static('public'));
 app.use('/user',userRouter);
 app.use('/expense',expenceRouter);
 app.use('/payment',paymentRouter);
+app.use('/premium',premiumRouter);
 
 db.sync({force:false}).then(()=>{
     app.listen(3000,()=>{
