@@ -41,11 +41,19 @@ const getExpense = async (req,res)=>{
 
 const delExpense = async(req,res)=>{
     try{
+      const ExpenseId = req.params.id;
+      const userId = req.user.id;
+      const expense = await expenseModel.findByPk(ExpenseId);
+      const user = await userModel.findByPk(userId);
       const delExp = await expenseModel.destroy({where:{id:req.params.id, userId: req.user.id}});
-      console.log(delExp);
       if(delExp===0){
-        return res.status(401).josn({success:false,message:'expense not found or not authorized'})
+        return res.status(401).json({success:false,message:'expense not found or not authorized'})
       }
+      const updatedExpense = parseFloat(user.totalExpense) - parseFloat(expense.amount);          
+      await userModel.update(
+            {totalExpense:updatedExpense},
+            {where:{id:req.user.id}}
+         )
       res.status(200).json({success:true,message:'expense deleted'});
     }
     catch(err){
