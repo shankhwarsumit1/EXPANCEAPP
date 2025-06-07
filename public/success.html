@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment Status</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f3f3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+    h1 {
+      color: #333;
+    }
+    .status-box {
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="status-box">
+    <h1>Checking your payment status...</h1>
+    <p id="status">Please wait</p>
+  </div>
+
+  <script>
+    // Extract orderId from query parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderId = urlParams.get('orderId');
+
+    if (!orderId) {
+      document.getElementById("status").innerText = "Missing order ID.";
+    } else {
+      fetch(`http://localhost:3000/payment/payment-status/${orderId}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.orderStatus) {
+            document.getElementById("status").innerText = "Payment Status: " + data.orderStatus;
+
+            // Optional: Redirect back to home after 5 seconds
+            setTimeout(() => {
+              window.location.href = "/expenceAdd/addExpence.html";
+            }, 5000);
+          } else {
+            console.log(data)
+            document.getElementById("status").innerText = "Something went wrong. Try again later.";
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          document.getElementById("status").innerText = "Error checking payment status.";
+        });
+    }
+  </script>
+</body>
+</html>

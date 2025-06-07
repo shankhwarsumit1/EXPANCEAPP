@@ -29,7 +29,7 @@
           },
 
           order_meta: {
-            "return_url":"http://localhost:3000/payment/payment-status/"+orderId,
+            "return_url":`http://localhost:3000/success.html?orderId=${orderId}`,
             payment_methods: "ccc, upi, nb"
           },
           order_expiry_time: formattedExpiryDate, //!? Set the valid expiry date
@@ -58,6 +58,7 @@
           ).length > 0
         ) {
           orderStatus = "Success"; 
+        
         } else if (
           getOrderResponse.filter(
             (transaction) => transaction.payment_status === "PENDING"
@@ -67,8 +68,8 @@
         } else {
           orderStatus = "Failure";
         }
-
-        return orderStatus;
+        
+      return orderStatus;
         
       } catch (error) {
         console.error("Error fetching order status:", error.message);

@@ -34,12 +34,20 @@
             console.log("Payment has been completed, Check for Payment Status");
             console.log(result.paymentDetails.paymentMessage);
             
-            const response = await fetch(`http://localhost:3000/payment/payment-status/${orderId}`,{
+            const response = await fetch(`http://localhost:3000/payment/payment-status/${orderId}}`,{
                 method:"GET",
             })
             
             const data = await response.json();
-            alert("your payment is" + data.orderStatus);
+            console.log(data);
+
+            if (data.orderStatus === "Success") {
+                // Redirect to addExpense.html
+                console.log(data);
+                window.location.href = "/addExpense.html";
+            } else {
+                alert("Your payment is " + data.orderStatus);
+            }
             }
             
              }

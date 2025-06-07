@@ -10,6 +10,7 @@ const cors = require('cors');
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.static('public'));
 
 
 
@@ -17,7 +18,7 @@ app.use('/user',userRouter);
 app.use('/expense',expenceRouter);
 app.use('/payment',paymentRouter);
 
-db.sync({force:false}).then(()=>{
+db.sync({force:true}).then(()=>{
     app.listen(3000,()=>{
         console.log('server is running on port 3000');
     })

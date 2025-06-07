@@ -1,5 +1,5 @@
 
-const {createOrder,getPaymentstatus} = require('../services/cashfreeService');
+const {createOrder,getPaymentStatus} = require('../services/cashfreeService');
 const paymentModel = require('../models/paymentModel');
 
 exports.processPayment = async (req,res)=>{
@@ -34,18 +34,17 @@ res.status(500).json({message:"error processing payment"});
 
 
 exports.getPaymentstatus = async(req,res) =>{
-    const paymentSessionId = req.params.paymentSessionId;
+    const orderId = req.params.orderId;
     try{
-        const orderStatus = await getPaymentstatus(paymentSessionId);
-        const order = await paymentModel.findOne({where:{paymentSessionId}});
+        const order = await paymentModel.findOne({where:{orderId}});
         
         if(!order){
             return res.status(404).json({message:"order not found"});
         }
+       const orderStatus = await getPaymentStatus(order.orderId);
 
         order.paymentStatus = orderStatus;
         await order.save();
-
         res.json({orderStatus});
     }
     catch(err){          

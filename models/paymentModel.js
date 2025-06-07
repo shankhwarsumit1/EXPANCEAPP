@@ -1,7 +1,7 @@
 const {DataTypes} = require('sequelize');
 const sequelize = require('../utils/db-connection');
 
-const paymentModel = sequelize.define('payments',{
+const paymentModel = sequelize.define('order',{
     orderId:{
         type:DataTypes.STRING,
         allowNull:false,
