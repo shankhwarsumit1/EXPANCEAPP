@@ -22,6 +22,9 @@ const paymentModel = sequelize.define('order',{
     paymentStatus:{
         type:DataTypes.STRING,
         allowNull:false
+    },
+    userId:{
+        type:DataTypes.INTEGER
     }
 });
 

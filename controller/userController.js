@@ -37,13 +37,12 @@ const login = async (req, res) => {
         message: 'user not found'
       });
     }
-
     const result = await bcrypt.compare(password, user.password);
     if (result) {
       res.status(200).json({
         success: true,
         message: "user login successfull",
-        token: generateAccessToken(user.id,user.name)
+        token: generateAccessToken(user.id,user.name),
       });
     } else {
       res.status(401).json({

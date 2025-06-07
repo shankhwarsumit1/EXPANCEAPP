@@ -6,5 +6,6 @@ router = express.Router();
 
 router.post('/addExpense',authenticate,expenseController.addExpense);
 router.get('/addExpense',authenticate,expenseController.getExpense);
+router.get('/isPremium',authenticate,expenseController.isPremium);
 router.delete('/addExpense/:id',authenticate,expenseController.delExpense);
-module.exports=router
+module.exports=router;

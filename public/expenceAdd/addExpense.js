@@ -5,7 +5,23 @@ const REST_API = "http://localhost:3000/expense/addExpense";
 const form = document.querySelector('form');
 const expenseList = document.querySelector('ul');
 const token = localStorage.getItem('token');
-const premium = document.querySelector('#premium');
+const Buypremium = document.querySelector('#premium');
+const leaderBoardButton = document.getElementById('leaders');
+(async()=>{
+    try{
+       const res = await axios.get(`http://localhost:3000/expense/isPremium`,{
+        headers:{'Authorization':token}
+       });
+       if(res.data.isPremium){
+        document.getElementById('premiumHeading').hidden=false;
+        leaderBoardButton.hidden=false;
+        Buypremium.hidden = true;
+       }
+    }
+    catch(err){
+          console.log(err);
+    }
+})();
 
 (async ()=>{
    try{  
@@ -19,7 +35,7 @@ const premium = document.querySelector('#premium');
    }
 })();
 
-premium.addEventListener('click',(e)=>{
+Buypremium.addEventListener('click',(e)=>{
     e.preventDefault();
     window.location.href='../payment/paymentlanding.html';
 })

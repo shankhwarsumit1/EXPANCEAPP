@@ -1,3 +1,4 @@
+const { userModel } = require('../models');
 const expenseModel = require('../models/expenceModel');
 
 const addExpense = async (req,res)=>{
@@ -10,6 +11,17 @@ const addExpense = async (req,res)=>{
         res.status(500).send('inernal server error');
         }
     }
+
+const isPremium = async(req,res)=>{
+    try{
+       const user = await userModel.findOne({where:{id:req.user.id}});
+       return res.status(200).json({isPremium:user.isPremium});
+    }
+    catch(err){
+       console.log(err);
+       res.status(500).send(err.message);
+    }
+}
 
 const getExpense = async (req,res)=>{
     try{
@@ -36,4 +48,4 @@ const delExpense = async(req,res)=>{
 }
 
 
-    module.exports = {addExpense,getExpense,delExpense};
+    module.exports = {addExpense,getExpense,delExpense,isPremium};

@@ -2,12 +2,14 @@
         const cashfree = Cashfree({
             Mode:"sandbox",
         });
-
+        const token = localStorage.getItem('token');
+        console.log(token)
         document.getElementById('renderBtn').addEventListener("click",async(e)=>{
             e.preventDefault();
             try{
                 const response = await fetch("http://localhost:3000/payment/pay",{
                 method:"post",
+                headers:{'Authorization':token}
             });
             const data = await response.json();
             const paymentSessionId = data.paymentSessionId;
@@ -36,6 +38,7 @@
             
             const response = await fetch(`http://localhost:3000/payment/payment-status/${orderId}}`,{
                 method:"GET",
+                headers:{'Authorization':token}
             })
             
             const data = await response.json();

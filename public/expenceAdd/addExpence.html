@@ -6,6 +6,7 @@
     <title>Add Expece</title>
 </head>
 <body>
+    <h1 id="premiumHeading" hidden="true">You are a Premium member</h1>
     <form class="form-container">
         <label for="expenseAmount">ExpenceAmount</label>
         <input type="text" name="expenseAmount" id="expenseAmount">
@@ -22,7 +23,8 @@
         <button type="submit">Add Expense</button>
     </form>
     <ul id="expense-list"></ul>
-    <button type="click" id="premium">buy premium</button>
+    <button type="click" id="premium" hidden = "false">buy premium</button>
+    <button type="click" id="leaders" hidden = "true">show leaderBoard</button>
 </body>
 <script src="./addExpense.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.9.0/axios.min.js"></script>
