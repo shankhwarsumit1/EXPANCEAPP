@@ -97,6 +97,7 @@ async function deleteExpense(newExpense,singleExpense){
         headers:{'Authorization':token}
     });
     singleExpense.remove();
+    window.location.reload();
     }
     catch(err){
        console.log(err);

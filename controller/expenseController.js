@@ -2,8 +2,14 @@ const { userModel } = require('../models');
 const expenseModel = require('../models/expenceModel');
 
 const addExpense = async (req,res)=>{
-    try{
+    try{ const {amount}=req.body;
+         const user = await userModel.findByPk(req.user.id);
          const addedExpense = await expenseModel.create({...req.body,userId: req.user.id});
+         const updatedExpense = parseFloat(user.totalExpense) + parseFloat(amount);          
+         await userModel.update(
+            {totalExpense:updatedExpense},
+            {where:{id:req.user.id}}
+         )
          res.status(201).json(addedExpense);
     }
     catch(err){
