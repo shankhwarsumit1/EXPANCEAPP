@@ -4,7 +4,7 @@ const {fn,col,literal} =require('sequelize');
 
 exports.showLeaderBoard = async(req,res)=>{
     try{
-    const results = await userModel.findAll();
+    const results = await userModel.findAll({order:[['totalExpense','DESC']]});
     res.status(200).json(results);
 
     }

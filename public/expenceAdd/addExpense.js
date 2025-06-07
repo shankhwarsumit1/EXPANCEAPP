@@ -9,7 +9,7 @@ const token = localStorage.getItem('token');
 const Buypremium = document.querySelector('#premium');
 const leaderBoardButton = document.getElementById('leaders');
 const leaderList = document.getElementById('leaderList');
-
+const leaderHeading = document.getElementById('leaderHeading');
 //checking premium user and giving premium leaderboard button and hidding buypremium button
 (async()=>{
     try{
@@ -20,6 +20,7 @@ const leaderList = document.getElementById('leaderList');
         document.getElementById('premiumHeading').hidden=false;
         leaderBoardButton.hidden=false;
         Buypremium.hidden = true;
+        
        }
     }
     catch(err){
@@ -43,7 +44,7 @@ const leaderList = document.getElementById('leaderList');
 //display leaders on leaderboard button click
 leaderBoardButton.addEventListener('click',async(e)=>{
    e.preventDefault();
-   try{
+   try{leaderHeading.hidden=false;
       if(leaderboardOn){
         return;
       }
