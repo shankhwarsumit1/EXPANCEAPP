@@ -66,5 +66,27 @@ const delExpense = async(req,res)=>{
     }
 }
 
+const downloadExpense = async(req,res)=>{
+    try{
+         const userId = req.user.id;
 
-    module.exports = {addExpense,getExpense,delExpense,isPremium};
+         const expenses = await expenseModel.findAll({where:{userId}});
+
+         let csv = 'Amount,Description,Category,CretedAt\n';
+//This is the header row of the CSV file — the first line in the file that names the columns.
+         expenses.forEach(exp=>{
+            csv +=`${exp.amount},${exp.description},${exp.category},${exp.createdAt}\n`;
+         });
+//For each exp (an expense), you add one line of comma-separated values to the CSV.
+         res.setHeader('Content-Disposition', 'attachment; filename=expenses.csv');
+//Don’t show this content in the browser — download it as a file, and name it expenses.csv.”
+         res.set('Content-Type','text/csv');
+         res.status(200).send(csv);
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json({'error':err.message});
+    }
+}
+
+    module.exports = {addExpense,getExpense,delExpense,isPremium,downloadExpense};

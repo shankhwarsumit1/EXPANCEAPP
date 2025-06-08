@@ -10,6 +10,7 @@ const Buypremium = document.querySelector('#premium');
 const leaderBoardButton = document.getElementById('leaders');
 const leaderList = document.getElementById('leaderList');
 const leaderHeading = document.getElementById('leaderHeading');
+const downloadBtn = document.getElementById('download');
 //checking premium user and giving premium leaderboard button and hidding buypremium button
 (async()=>{
     try{
@@ -20,13 +21,41 @@ const leaderHeading = document.getElementById('leaderHeading');
         document.getElementById('premiumHeading').hidden=false;
         leaderBoardButton.hidden=false;
         Buypremium.hidden = true;
-        
+        downloadBtn.hidden = false;
        }
     }
     catch(err){
           console.log(err);
     }
 })();
+
+downloadBtn.addEventListener('click',async(e)=>{
+try{
+   const res = await axios.get('http://localhost:3000/expense/download',{
+    headers:{'Authorization':token},
+    responseType:'blob'
+   })
+//responseType: 'blob' makes Axios treat the server response as a file (not JSON or text).
+// So, res.data becomes a Blob object, which holds binary data (e.g., CSV content).
+   const blob = new Blob([res.data],{type:'text/csv'});
+   const url = window.URL.createObjectURL(blob);
+//It creates a temporary downloadable link from your file (blob).
+   const a = document.createElement('a');
+   a.href = url;
+// You attach that temporary shelf link to the anchor.
+   a.download='expenses.csv';
+//You tell the browser:
+//“When the user clicks this anchor, don’t open it — download it as a file with this name.”
+   a.click();
+//You simulate a user clicking that anchor, triggering the download.
+//<a href="..." download="expenses.csv">Click Me</a>
+   window.URL.revokeObjectURL(url);
+//Finally, clean up that temporary file link from memory.
+}
+catch(err){
+    console.log(err);
+}
+});
 
 //displaying expenses on reloading
 (async ()=>{

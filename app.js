@@ -18,7 +18,7 @@ app.use('/user',userRouter);
 app.use('/expense',expenceRouter);
 app.use('/payment',paymentRouter);
 app.use('/premium',premiumRouter);
-app.use('/password',passwordRouter)
+app.use('/password',passwordRouter);
 
 db.sync({force:false}).then(()=>{
     app.listen(3000,()=>{
