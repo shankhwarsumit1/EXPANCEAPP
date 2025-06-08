@@ -3,7 +3,8 @@ window.addEventListener('DOMContentLoaded', () => {
     const passwordInput = document.querySelector('#password');
     const loginBtn = document.querySelector('#login-btn');
     const REST_API = "http://localhost:3000/user/login";
-    
+    const forgotBtn = document.getElementById('forgotPassword');
+
     loginBtn.addEventListener('click', async (event) => {
         event.preventDefault();
         const user = {
@@ -27,4 +28,14 @@ window.addEventListener('DOMContentLoaded', () => {
             console.log(err);
         }
     });
+
+
+    forgotBtn.addEventListener('click',async(e)=>{
+        try{
+            window.location.href='./forgotPassword.html';
+        }
+        catch(er){
+            console.log(er);
+        }
+    })
 });
