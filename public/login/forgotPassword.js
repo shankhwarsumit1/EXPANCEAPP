@@ -6,6 +6,10 @@ window.addEventListener('DOMContentLoaded',(e)=>{
     form.addEventListener('submit',async(e)=>{
         try{ e.preventDefault();
            const obj = {email:emailInput.value};
+           const res = await axios.get(`http://localhost:3000/password/forgotpassword`,{
+            headers:{"Usermail":obj.email}
+           });
+           console.log(res.data.code);
         }
         catch(err){
             console.log(err);

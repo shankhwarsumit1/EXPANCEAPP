@@ -6,6 +6,7 @@ const userRouter = require('./router/userRouter');
 const expenceRouter = require('./router/expenceRouter');
 const paymentRouter = require('./router/paymentRouter');
 const premiumRouter = require('./router/premiumRouter');
+const passwordRouter = require('./router/passwordRouter');
 require('./models');
 const cors = require('cors');
 const app = express();
@@ -17,6 +18,7 @@ app.use('/user',userRouter);
 app.use('/expense',expenceRouter);
 app.use('/payment',paymentRouter);
 app.use('/premium',premiumRouter);
+app.use('/password',passwordRouter)
 
 db.sync({force:false}).then(()=>{
     app.listen(3000,()=>{
