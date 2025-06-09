@@ -1,70 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Payment Status</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f3f3f3;
+      background: linear-gradient(to right, #4facfe, #00f2fe);
+      margin: 0;
+      padding: 0;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
       flex-direction: column;
     }
+
     h1 {
-      color: #333;
+      color: #fff;
+      margin-bottom: 20px;
     }
+
     .status-box {
-      padding: 20px;
-      background: white;
+      background: #ffffff;
+      padding: 30px;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
       text-align: center;
+      max-width: 400px;
+      width: 90%;
+    }
+
+    #status {
+      font-size: 18px;
+      color: #333;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
+  <h1>Payment Status Checker</h1>
   <div class="status-box">
-    <h1>Checking your payment status...</h1>
+    <h2>Checking your payment status...</h2>
     <p id="status">Please wait</p>
   </div>
 
   <script>
-    // Extract orderId from query parameters
     const urlParams = new URLSearchParams(window.location.search);
     const orderId = urlParams.get('orderId');
     const token = localStorage.getItem('token');
+    
     if (!orderId) {
       document.getElementById("status").innerText = "Missing order ID.";
     } else {
-      fetch(`http://localhost:3000/payment/payment-status/${orderId}`,
-        { method:"GET",
-          headers:{'Authorization':token}
+      fetch(`http://localhost:3000/payment/payment-status/${orderId}`, {
+        method: "GET",
+        headers: { 'Authorization': token }
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.orderStatus === 'Success') {
+          document.getElementById("status").innerText = "Payment Successful 🎉";
+          localStorage.setItem('isPremium', true);
+          setTimeout(() => {
+            window.location.href = "/expenceAdd/addExpence.html";
+          }, 5000);
+        } else {
+          document.getElementById("status").innerText = "Payment Status: " + data.orderStatus;
+          setTimeout(() => {
+            window.location.href = "/expenceAdd/addExpence.html";
+          }, 5000);
         }
-      )
-        .then(res => res.json())
-        .then(data => {
-          if (data.orderStatus==='Success') {
-            document.getElementById("status").innerText = "Payment Status: " + data.orderStatus;
-            // Optional: Redirect back to home after 5 seconds
-            localStorage.setItem('isPremium',true);
-            setTimeout(() => {
-              window.location.href = "/expenceAdd/addExpence.html";
-            }, 5000);
-          } else {
-            console.log(data)
-            document.getElementById("status").innerText = `${data.orderStatus}`;
-            setTimeout(() => {
-              window.location.href = "/expenceAdd/addExpence.html";
-            }, 5000);
-          }
-        })
-        .catch(err => {
-          console.error(err);
-          document.getElementById("status").innerText = "Error checking payment status.";
-        });
+      })
+      .catch(err => {
+        console.error(err);
+        document.getElementById("status").innerText = "Error checking payment status.";
+      });
     }
   </script>
 </body>

@@ -119,7 +119,8 @@ catch(err){
 //display leaders on leaderboard button click
 leaderBoardButton.addEventListener('click',async(e)=>{
    e.preventDefault();
-   try{leaderHeading.hidden=false;
+   try{
+     leaderHeading.hidden=false;
       if(leaderboardOn){
         return;
       }
@@ -158,7 +159,9 @@ form.addEventListener('submit',async (event)=>{
     const addedExpense = await postExpense(expense);
     display(addedExpense.data);
     form.reset();
-    window.location.reload();
+    if(leaderboardOn){
+    window.location.reload();//because leaderboard will also change
+    }
 })
 
 //display expenses
@@ -178,7 +181,9 @@ async function deleteExpense(newExpense,singleExpense){
         headers:{'Authorization':token}
     });
     singleExpense.remove();
-    window.location.reload();
+ if(leaderboardOn){
+    window.location.reload();//because leaderboard will also change
+    }
     }
     catch(err){
        console.log(err);

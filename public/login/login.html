@@ -1,26 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="./login.css">
+  <title>Login Page</title>
 </head>
 <body>
+  <div class="container">
     <h1>Login</h1>
-<div class="login-container">   
-    <label for="email">Enter Email:</label>
-    <input type="email" name="email" id="email">
+    <div class="login-container">
+      <label for="email">Enter Email:</label>
+      <input type="email" name="email" id="email" />
 
-    <label for="password">Enter Password</label>
-    <input type="password" name="password" id="password">
+      <label for="password">Enter Password</label>
+      <input type="password" name="password" id="password" />
 
-    <button type="submit" id="login-btn">Login</button>
-</div> 
-<br>
-<button type="click" id="forgotPassword">Forgot Password</button><br><br>
-<a href="../signup/signup.html">SignUp</a>
+      <button type="submit" id="login-btn">Login</button>
+    </div>
+
+    <button type="click" id="forgotPassword">Forgot Password?</button><br /><br />
+    <a href="../signup/signup.html">Don't have an account? Sign Up</a>
+  </div>
+
+  <script src="./login.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.9.0/axios.min.js"></script>
 </body>
-<script src="./login.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.9.0/axios.min.js"></script>
-
 </html>

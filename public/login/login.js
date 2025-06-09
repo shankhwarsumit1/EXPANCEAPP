@@ -13,9 +13,12 @@ window.addEventListener('DOMContentLoaded', () => {
         };
         try {
             const response = await axios.post(REST_API, user);
-            if(response.data.success){
+            if(response.data.success){         
+                emailInput.value='';
+                passwordInput.value='';
                 localStorage.setItem('token',response.data.token);
                 window.location.href = "../expenceAdd/addExpence.html";
+   
             }else{
             alert(response.data.message);
             }
@@ -26,6 +29,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 alert('An error occurred');
             }
             console.log(err);
+     
         }
     });
 

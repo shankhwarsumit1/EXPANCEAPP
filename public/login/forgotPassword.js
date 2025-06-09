@@ -14,6 +14,7 @@ window.addEventListener('DOMContentLoaded',(e)=>{
            });
            message.innerText = "Check your email";
            console.log(res.data.code);
+           form.reset();
         }
         catch(err){
             console.log(err);
