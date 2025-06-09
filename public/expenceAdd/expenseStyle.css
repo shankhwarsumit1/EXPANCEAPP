@@ -24,11 +24,11 @@ h1, h2 {
 .form-container {
   flex: 1;
   min-width: 300px;
-  max-width: 400px;
+  max-width: 300px;
   background: white;
-  padding: 20px;
+  padding: 50px;
   border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 12px rgba(117, 114, 114, 0.1);
 }
 
 .form-container label {
