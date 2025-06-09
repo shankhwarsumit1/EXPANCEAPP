@@ -13,6 +13,7 @@ const leaderHeading = document.getElementById('leaderHeading');
 const downloadBtn = document.getElementById('download');
 const rangeSelect = document.getElementById('rangeSelect');
 const rangeHeading = document.getElementById('rangeHeading');
+const leaderboard = document.querySelector('.leaderboard');
 
 //checking premium user and giving premium leaderboard button and hidding buypremium button
 (async()=>{
@@ -21,11 +22,12 @@ const rangeHeading = document.getElementById('rangeHeading');
         headers:{'Authorization':token}
        });
        if(res.data.isPremium){
-        document.getElementById('premiumHeading').hidden=false;
         leaderBoardButton.hidden=false;
         Buypremium.hidden = true;
         downloadBtn.hidden = false;
         rangeHeading.hidden=false;
+        leaderboard.hidden=false;
+        document.getElementById('premiumHeading').hidden = false;
         document.getElementById('rangeSelect').hidden = false;
        }
     }
@@ -65,6 +67,7 @@ rangeSelect.addEventListener('change',() => {
       const createdAt = new Date(exp.createdAt); //creating a JavaScript Date object from a string value (exp.createdAt).
       return createdAt.toDateString() === now.toDateString(); //comparing only the date portion (ignoring time) of the expense's creation date and the current date (now).
     });
+
   } else if (selectedRange === 'weekly') {
     const start = new Date(now);
     start.setDate(now.getDate() - now.getDay()); // subtract the weekday number from the current date, you always land on Sunday of that week, sets the date to the most recent Sunday, no matter what day today
@@ -74,14 +77,17 @@ rangeSelect.addEventListener('change',() => {
       const createdAt = new Date(exp.createdAt);
       return createdAt >= start && createdAt <= end;
     });
+
   } else if (selectedRange === 'monthly') {
     filtered = allExpenses.filter(exp => {
       const createdAt = new Date(exp.createdAt);
       return createdAt.getMonth() === now.getMonth() &&
              createdAt.getFullYear() === now.getFullYear();
     });
+
   } else {
     filtered = allExpenses; // for "all"
+
   }
   showExpenses(filtered);
 });
@@ -122,10 +128,15 @@ leaderBoardButton.addEventListener('click',async(e)=>{
    try{
      leaderHeading.hidden=false;
       if(leaderboardOn){
+      leaderList.innerHTML=''; 
+            leaderHeading.hidden=true;
+
+      leaderboardOn=false;
         return;
       }
       else{
       leaderboardOn=true;
+      leaderHeading.hidden=false;
        const res = await axios.get('http://localhost:3000/premium/showLeaderBoard');
        res.data.forEach((lead)=>{
         displayLeaderboard(lead);
@@ -158,6 +169,7 @@ form.addEventListener('submit',async (event)=>{
     }
     const addedExpense = await postExpense(expense);
     display(addedExpense.data);
+    allExpenses.push(addedExpense.data);
     form.reset();
     if(leaderboardOn){
     window.location.reload();//because leaderboard will also change
@@ -166,6 +178,7 @@ form.addEventListener('submit',async (event)=>{
 
 //display expenses
 function display(newExpense){
+const leaderList = document.getElementById('rangeHeading').hidden=false;
  const singleExpense = document.createElement('li');
  singleExpense.innerHTML = `${newExpense.amount} ${newExpense.description} ${newExpense.category} <Button type="click" id="del">DELETE</Button>`
  expenseList.appendChild(singleExpense);
@@ -180,10 +193,9 @@ async function deleteExpense(newExpense,singleExpense){
     await axios.delete(`${REST_API}/${newExpense.id}`,{
         headers:{'Authorization':token}
     });
+    allExpenses = allExpenses.filter(exp => exp.id !== newExpense.id);
     singleExpense.remove();
- if(leaderboardOn){
-    window.location.reload();//because leaderboard will also change
-    }
+        
     }
     catch(err){
        console.log(err);
