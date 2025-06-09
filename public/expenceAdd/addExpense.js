@@ -12,6 +12,8 @@ const leaderList = document.getElementById('leaderList');
 const leaderHeading = document.getElementById('leaderHeading');
 const downloadBtn = document.getElementById('download');
 const rangeSelect = document.getElementById('rangeSelect');
+const rangeHeading = document.getElementById('rangeHeading');
+
 //checking premium user and giving premium leaderboard button and hidding buypremium button
 (async()=>{
     try{
@@ -23,6 +25,7 @@ const rangeSelect = document.getElementById('rangeSelect');
         leaderBoardButton.hidden=false;
         Buypremium.hidden = true;
         downloadBtn.hidden = false;
+        rangeHeading.hidden=false;
         document.getElementById('rangeSelect').hidden = false;
        }
     }
@@ -54,18 +57,19 @@ function showExpenses(expenses) {
 
 rangeSelect.addEventListener('change',() => {
   const selectedRange = rangeSelect.value;
+  rangeHeading.textContent = `Showing: ${selectedRange.toUpperCase()} Expenses`;
   const now = new Date();
   let filtered = [];
   if (selectedRange === 'daily') {
     filtered = allExpenses.filter(exp => {
-      const createdAt = new Date(exp.createdAt);
-      return createdAt.toDateString() === now.toDateString();
+      const createdAt = new Date(exp.createdAt); //creating a JavaScript Date object from a string value (exp.createdAt).
+      return createdAt.toDateString() === now.toDateString(); //comparing only the date portion (ignoring time) of the expense's creation date and the current date (now).
     });
   } else if (selectedRange === 'weekly') {
     const start = new Date(now);
-    start.setDate(now.getDate() - now.getDay()); // Sunday
+    start.setDate(now.getDate() - now.getDay()); // subtract the weekday number from the current date, you always land on Sunday of that week, sets the date to the most recent Sunday, no matter what day today
     const end = new Date(start);
-    end.setDate(start.getDate() + 6); // Saturday
+    end.setDate(start.getDate() + 6); // end is Saturday
     filtered = allExpenses.filter(exp => {
       const createdAt = new Date(exp.createdAt);
       return createdAt >= start && createdAt <= end;
@@ -197,7 +201,6 @@ async function getExpense() {
            const res = await axios.get(REST_API,{
             headers:{'Authorization':token}
            });
-           console.log(res);
            return res;
     }
     catch(err){

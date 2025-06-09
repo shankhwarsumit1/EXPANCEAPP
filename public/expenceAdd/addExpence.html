@@ -1,46 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Expece</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Expense Tracker</title>
+  <link rel="stylesheet" href="./expenseStyle.css" />
 </head>
-
 <body>
-    <h1 id="premiumHeading" hidden="true">You are a Premium member</h1>
+  <h1 id="premiumHeading" hidden>You are a Premium member</h1>
+
+  <div class="main-wrapper">
     <form class="form-container">
-        <label for="expenseAmount">ExpenceAmount</label>
-        <input type="text" name="expenseAmount" id="expenseAmount">
-        <label for="description">Description</label>
-        <input type="text" name="description" id="description">
-        <label for="category">Category</label>
-        <select name="category" id="category">
-            <option value="food">Food</option>
-            <option value="transport">Transport</option>
-            <option value="utilities">Utilities</option>
-            <option value="entertainment">Entertainment</option>
-            <option value="other">Other</option>
-        </select>
-        <button type="submit">Add Expense</button>
-    </form>
-    <ul id="expense-list"></ul>
-    <button id="download" type="click" hidden="true">download report</button>
-    <button type="click" id="premium">buy premium</button>
-    <select id="rangeSelect" hidden>
+      <label for="expenseAmount">Expense Amount</label>
+      <input type="text" id="expenseAmount" name="expenseAmount" required />
+
+      <label for="description">Description</label>
+      <input type="text" id="description" name="description" required />
+
+      <label for="category">Category</label>
+      <select id="category" name="category">
+        <option value="food">Food</option>
+        <option value="transport">Transport</option>
+        <option value="utilities">Utilities</option>
+        <option value="entertainment">Entertainment</option>
+        <option value="other">Other</option>
+      </select>
+
+      <label for="rangeSelect" hidden>Select Time Interval</label>
+      <select id="rangeSelect" hidden>
         <option value="all">All</option>
         <option value="daily">Daily</option>
         <option value="weekly">Weekly</option>
         <option value="monthly">Monthly</option>
-    </select>
-    <button type="click" id="leaders" hidden="true">show leaderBoard</button>
-    <div class="leaderboard">
-        <h1 id="leaderHeading" hidden="true">LeaderBoard</h1>
-        <ul id="leaderList"></ul>
+      </select>
+
+      <button type="submit">Add Expense</button>
+    </form>
+
+    <div class="expense-section">
+      <h2 id="rangeHeading">Showing: All Expenses</h2>
+      <ul id="expense-list"></ul>
     </div>
+  </div>
 
+  <div class="buttons">
+    <button id="download" hidden>Download Report</button>
+    <button id="premium">Buy Premium</button>
+    <button id="leaders" hidden>Show Leaderboard</button>
+  </div>
+
+  <div class="leaderboard">
+    <h2 id="leaderHeading" hidden>Leaderboard</h2>
+    <ul id="leaderList"></ul>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.9.0/axios.min.js"></script>
+  <script src="./addExpense.js"></script>
 </body>
-<script src="./addExpense.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.9.0/axios.min.js"></script>
-
 </html>
