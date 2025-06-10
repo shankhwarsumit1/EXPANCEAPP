@@ -35,11 +35,11 @@ const isPremium = async(req,res)=>{
 
 const getExpense = async (req,res)=>{
     try{ let pageInt = parseInt(req.query.page)||1;
+         let limit = parseInt(req.query.limit);
          let range = req.query.range;
          if(pageInt > 0){
             page = pageInt;
          }
-        const limit = 5;
         const offset = (page-1)*limit;
         let dataFilter = {};
         const now = new Date();

@@ -15,10 +15,13 @@ const rangeSelect = document.getElementById('rangeSelect');
 const rangeHeading = document.getElementById('rangeHeading');
 const leaderboard = document.querySelector('.leaderboard');
 const pagination = document.getElementById('pagination');
+const expensesPerPage = document.getElementById('expensesPerPage');
 let currentRange = 'all';
 let page = 1;
+let limit = 5;
 let paginationData=[];
 //checking premium user and giving premium leaderboard button and hidding buypremium button
+expensesPerPage.value='5';
 (async()=>{
     try{
        const res = await axios.get(`http://localhost:3000/expense/isPremium`,{
@@ -40,9 +43,9 @@ let paginationData=[];
 })();
 
 //shows all expenses on reloading 
-async function load(pageNo,range='all') {
+async function load(pageNo,range='all',limit='5') {
   try {
-    const res = await getExpense(pageNo,range); // This returns all expenses
+    const res = await getExpense(pageNo,range,limit); // This returns all expenses
     paginationData = res.data.data;
     showExpenses(paginationData.content);
     showPagination(paginationData);
@@ -52,7 +55,7 @@ async function load(pageNo,range='all') {
   }
 };
 
-load(page,currentRange);
+load(page,currentRange,limit);
 
 //call display for each expense
 function showExpenses(expenses) {
@@ -68,9 +71,14 @@ rangeSelect.addEventListener('change',(e) => {
   currentRange = rangeSelect.value || 'all';
   console.log(currentRange);
   page=1;
-  load(page,currentRange);
+  load(page,currentRange,limit);
 });
 
+expensesPerPage.addEventListener('change',(e)=>{
+  e.preventDefault();
+  limit=expensesPerPage.value;
+  load(page,currentRange,limit);
+})
 
 downloadBtn.addEventListener('click',async(e)=>{
 try{
@@ -178,7 +186,7 @@ async function deleteExpense(newExpense,singleExpense){
         headers:{'Authorization':token}
     });
     singleExpense.remove();
-    load(page,currentRange);
+    load(page,currentRange,limit); 
     }
     catch(err){
        console.log(err);
@@ -196,9 +204,9 @@ catch(err){
     console.log(err);
 }}
 
-async function getExpense(pageNo,range='all') {
+async function getExpense(pageNo,range='all',limit='5') {
     try{
-           const res = await axios.get(`http://localhost:3000/expense/addExpense?page=${pageNo}&range=${range}`,{
+           const res = await axios.get(`http://localhost:3000/expense/addExpense?page=${pageNo}&range=${range}&limit=${limit}`,{
             headers:{'Authorization':token}
            });
            return res;
@@ -218,7 +226,7 @@ async function showPagination({hasNextPage,hasPreviousPage}){
                  rangeHeading.textContent = `Showing: ${currentRange.toUpperCase()} Expenses`;
 
               page=page-1;
-              load(page,currentRange);
+              load(page,currentRange,limit);
       } )
 
       pagination.appendChild(btn);
@@ -234,9 +242,8 @@ async function showPagination({hasNextPage,hasPreviousPage}){
       btn3.innerHTML=page+1;
       btn3.addEventListener('click',()=>{
           rangeHeading.textContent = `Showing: ${currentRange.toUpperCase()} Expenses`;
-          console.log(rangeHeading.textContent);
               page=page+1;
-              load(page,currentRange);
+              load(page,currentRange,limit);
       })
     pagination.appendChild(btn3);
     }
