@@ -16,6 +16,10 @@ const rangeHeading = document.getElementById('rangeHeading');
 const leaderboard = document.querySelector('.leaderboard');
 const pagination = document.getElementById('pagination');
 const expensesPerPage = document.getElementById('expensesPerPage');
+const firstExp=document.getElementById('firstExp');
+const rangeSelectHeading = document.getElementById('rangeSelectHeading');
+
+let isExp = false;
 let currentRange = 'all';
 let page = 1;
 let limit = 5;
@@ -31,8 +35,8 @@ expensesPerPage.value='5';
         leaderBoardButton.hidden=false;
         Buypremium.hidden = true;
         downloadBtn.hidden = false;
-        rangeHeading.hidden=false;
         leaderboard.hidden=false;
+        rangeSelectHeading.hidden=false;
         document.getElementById('premiumHeading').hidden = false;
         document.getElementById('rangeSelect').hidden = false;
        }
@@ -47,13 +51,20 @@ async function load(pageNo,range='all',limit='5') {
   try {
     const res = await getExpense(pageNo,range,limit); // This returns all expenses
     paginationData = res.data.data;
+
     if(paginationData.content.length===0 && page!=1){
       page=page-1;
     if(leaderboardOn){
       leaderBoardButton.click();
-    }
+    }   
       load(page,range,limit);
     }
+
+    if(paginationData.content.length===0){
+      rangeHeading.hidden=true;
+      firstExp.hidden=false;
+    }
+
     showExpenses(paginationData.content);
     showPagination(paginationData);
     rangeHeading.textContent = `Showing: ${range.toUpperCase()} Expenses`;
@@ -159,10 +170,13 @@ form.addEventListener('submit',async (event)=>{
     const expense = {
         amount:event.target.expenseAmount.value,
         description:event.target.description.value,
-        category:event.target.category.value
+        category:event.target.category.value,
+        note:event.target.note.value
     }
     try{
     const addedExpense = await postExpense(expense);
+    console.log(addedExpense);
+    console.log(expense);
     display(addedExpense.data);
     load(page,currentRange,limit);
     // form.reset();
@@ -177,15 +191,23 @@ form.addEventListener('submit',async (event)=>{
 
 //display expenses
 function display(newExpense){
+  rangeHeading.hidden=false;
+  firstExp.hidden=true;
 const leaderList = document.getElementById('rangeHeading').hidden=false;
  const singleExpense = document.createElement('li');
- singleExpense.innerHTML = `${newExpense.amount} ${newExpense.description} ${newExpense.category} <Button type="click" id="del">DELETE</Button>`
+ if(newExpense.note!=null){
+ singleExpense.innerHTML = `${newExpense.amount}  ${newExpense.description}  ${newExpense.category}  ${newExpense.note} <Button type="click" id="del">DELETE</Button>`
+ }
+ else{
+   singleExpense.innerHTML = `${newExpense.amount}  ${newExpense.description}  ${newExpense.category} <Button type="click" id="del">DELETE</Button>`
+ }
  expenseList.appendChild(singleExpense);
  const delBtn = singleExpense.querySelector('#del');
  delBtn.addEventListener('click',()=>{
     deleteExpense(newExpense,singleExpense);
  })
 }
+
 
 async function deleteExpense(newExpense,singleExpense){
     try{

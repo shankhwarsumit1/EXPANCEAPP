@@ -16,6 +16,9 @@
 
       <label for="description">Description</label>
       <input type="text" id="description" name="description" required />
+      
+      <label for="note">Note</label>
+      <input type="text" id="note" name="note" required />
 
       <label for="category">Category</label>
       <select id="category" name="category">
@@ -26,7 +29,7 @@
         <option value="other">Other</option>
       </select>
 
-      <label for="rangeSelect" hidden>Select Time Interval</label>
+      <label for="rangeSelect" id="rangeSelectHeading" hidden>Select Time Interval</label>
       <select id="rangeSelect" hidden>
         <option value="all">All</option>
         <option value="daily">Daily</option>
@@ -38,7 +41,9 @@
     </form>
 
     <div class="expense-section">
+      <h2 id="firstExp">Add your first Expense</h2>
       <h2 id="rangeHeading" hidden>Showing: All Expenses</h2>
+
       <label for="expensesPerPage">Expenses Per Page</label>
       <select name="expensesPerPage" id="expensesPerPage">
         <option value="2">2</option>
@@ -47,6 +52,7 @@
         <option value="15">15</option>
        <option value="20">20</option>
       </select>
+      
       <ul id="expense-list"></ul>
     </div>
   </div>
