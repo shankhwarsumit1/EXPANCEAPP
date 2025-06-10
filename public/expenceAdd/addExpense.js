@@ -14,7 +14,10 @@ const downloadBtn = document.getElementById('download');
 const rangeSelect = document.getElementById('rangeSelect');
 const rangeHeading = document.getElementById('rangeHeading');
 const leaderboard = document.querySelector('.leaderboard');
-
+const pagination = document.getElementById('pagination');
+let currentRange = 'all';
+let page = 1;
+let paginationData=[];
 //checking premium user and giving premium leaderboard button and hidding buypremium button
 (async()=>{
     try{
@@ -37,17 +40,19 @@ const leaderboard = document.querySelector('.leaderboard');
 })();
 
 //shows all expenses on reloading 
-let allExpenses = [];
-(async () => {
+async function load(pageNo,range='all') {
   try {
-    const res = await getExpense(); // This returns all expenses
-    allExpenses = res.data.expense;
-    console.log(allExpenses);
-    showExpenses(allExpenses);
+    const res = await getExpense(pageNo,range); // This returns all expenses
+    paginationData = res.data.data;
+    showExpenses(paginationData.content);
+    showPagination(paginationData);
+    rangeHeading.textContent = `Showing: ${range.toUpperCase()} Expenses`;
   } catch (err) {
     console.log(err);
   }
-})();
+};
+
+load(page,currentRange);
 
 //call display for each expense
 function showExpenses(expenses) {
@@ -57,39 +62,13 @@ function showExpenses(expenses) {
   });
 }
 
-rangeSelect.addEventListener('change',() => {
-  const selectedRange = rangeSelect.value;
-  rangeHeading.textContent = `Showing: ${selectedRange.toUpperCase()} Expenses`;
-  const now = new Date();
-  let filtered = [];
-  if (selectedRange === 'daily') {
-    filtered = allExpenses.filter(exp => {
-      const createdAt = new Date(exp.createdAt); //creating a JavaScript Date object from a string value (exp.createdAt).
-      return createdAt.toDateString() === now.toDateString(); //comparing only the date portion (ignoring time) of the expense's creation date and the current date (now).
-    });
-
-  } else if (selectedRange === 'weekly') {
-    const start = new Date(now);
-    start.setDate(now.getDate() - now.getDay()); // subtract the weekday number from the current date, you always land on Sunday of that week, sets the date to the most recent Sunday, no matter what day today
-    const end = new Date(start);
-    end.setDate(start.getDate() + 6); // end is Saturday
-    filtered = allExpenses.filter(exp => {
-      const createdAt = new Date(exp.createdAt);
-      return createdAt >= start && createdAt <= end;
-    });
-
-  } else if (selectedRange === 'monthly') {
-    filtered = allExpenses.filter(exp => {
-      const createdAt = new Date(exp.createdAt);
-      return createdAt.getMonth() === now.getMonth() &&
-             createdAt.getFullYear() === now.getFullYear();
-    });
-
-  } else {
-    filtered = allExpenses; // for "all"
-
-  }
-  showExpenses(filtered);
+rangeSelect.addEventListener('change',(e) => {
+  // rangeHeading.textContent = `Showing: ${range.toUpperCase()} Expenses`;
+  e.preventDefault();
+  currentRange = rangeSelect.value || 'all';
+  console.log(currentRange);
+  page=1;
+  load(page,currentRange);
 });
 
 
@@ -167,13 +146,18 @@ form.addEventListener('submit',async (event)=>{
         description:event.target.description.value,
         category:event.target.category.value
     }
+    try{
     const addedExpense = await postExpense(expense);
     display(addedExpense.data);
-    allExpenses.push(addedExpense.data);
-    form.reset();
+    load(page,currentRange);
+    // form.reset();
     if(leaderboardOn){
     window.location.reload();//because leaderboard will also change
     }
+  }
+  catch(err){
+    console.log(err);
+  }
 })
 
 //display expenses
@@ -193,9 +177,8 @@ async function deleteExpense(newExpense,singleExpense){
     await axios.delete(`${REST_API}/${newExpense.id}`,{
         headers:{'Authorization':token}
     });
-    allExpenses = allExpenses.filter(exp => exp.id !== newExpense.id);
     singleExpense.remove();
-        
+    load(page,currentRange);
     }
     catch(err){
        console.log(err);
@@ -213,9 +196,9 @@ catch(err){
     console.log(err);
 }}
 
-async function getExpense() {
+async function getExpense(pageNo,range='all') {
     try{
-           const res = await axios.get(REST_API,{
+           const res = await axios.get(`http://localhost:3000/expense/addExpense?page=${pageNo}&range=${range}`,{
             headers:{'Authorization':token}
            });
            return res;
@@ -225,19 +208,42 @@ async function getExpense() {
     }
 }
 
+async function showPagination({hasNextPage,hasPreviousPage}){
+  try{
+    pagination.innerHTML='';
+    if(hasPreviousPage){
+      const btn= document.createElement('button');
+      btn.innerHTML = page-1;
+      btn.addEventListener('click',()=>{
+                 rangeHeading.textContent = `Showing: ${currentRange.toUpperCase()} Expenses`;
 
+              page=page-1;
+              load(page,currentRange);
+      } )
 
+      pagination.appendChild(btn);
+    }
 
+    const currentBtn = document.createElement('button');
+    currentBtn.innerHTML=page;
+    currentBtn.classList.add('active');
+    pagination.appendChild(currentBtn);
 
+    if(hasNextPage){
+      const btn3 = document.createElement('button');
+      btn3.innerHTML=page+1;
+      btn3.addEventListener('click',()=>{
+          rangeHeading.textContent = `Showing: ${currentRange.toUpperCase()} Expenses`;
+          console.log(rangeHeading.textContent);
+              page=page+1;
+              load(page,currentRange);
+      })
+    pagination.appendChild(btn3);
+    }
+    }
+  catch(err){
+    console.log(err);
+  }
+}
 
-
-
-
-
-
-
-
-
-
-
-})
+});

@@ -1,6 +1,7 @@
 const { userModel } = require('../models');
 const expenseModel = require('../models/expenceModel');
 const sequelize = require('../utils/db-connection');
+const {Op} = require('sequelize');
 const addExpense = async (req,res)=>{
     try{const transaction = await sequelize.transaction(); 
         const {amount}=req.body;
@@ -33,9 +34,59 @@ const isPremium = async(req,res)=>{
 }
 
 const getExpense = async (req,res)=>{
-    try{
-        const expense = await expenseModel.findAll({where:{userId:req.user.id}});
-        res.status(200).json({expense,success: true});
+    try{ let pageInt = parseInt(req.query.page)||1;
+         let range = req.query.range;
+         if(pageInt > 0){
+            page = pageInt;
+         }
+        const limit = 5;
+        const offset = (page-1)*limit;
+        let dataFilter = {};
+        const now = new Date();
+
+        if(range==='daily'){
+            const start = new Date(now);
+            start.setHours(0,0,0,0);
+            const end = new Date(now);
+            end.setHours(23,59,59,999);
+            dataFilter = {
+                createdAt:{[Op.between]:[start,end]}
+            };
+        }
+        else if(range==='weekly'){
+            const start = new Date(now);
+            start.setDate(start.getDate()-start.getDay());
+            start.setHours(0,0,0,0);
+            const end = new Date(start);//sunday of current week
+            end.setDate(end.getDate()+6);
+            end.setHours(23,59,59,999);
+            dataFilter = {
+                createdAt:{[Op.between]:[start,end]}
+            };
+        }
+        else if(range==='monthly'){
+            const start  = new Date(now.getFullYear(),now.getMonth(),1);
+            start.setHours(0,0,0,0);
+            const end = new Date(now.getFullYear(),now.getMonth()+1,0);
+            end.setHours(23,59,59,999);
+            dataFilter = {
+                createdAt:{[Op.between]:[start,end]}
+            };
+        };
+
+        const whereClause = {userId:req.user.id,...dataFilter};
+        const result = await expenseModel.findAndCountAll({limit:limit,offset:offset,where:whereClause});
+        const totalPages = Math.ceil(result.count/limit);
+        const previousPage= page>1?page-1:null;
+
+        res.status(200).json({success: true,data:{
+            'totalItems':result.count,
+            'totalPages':totalPages,
+            'hasNextPage':page<totalPages,
+            'hasPreviousPage':page>1,
+            'previousPage':previousPage,
+            'limit':limit,
+            'content':result.rows}});
     }
     catch(err){
         res.status(500).send(err);
