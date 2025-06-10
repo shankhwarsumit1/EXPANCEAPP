@@ -47,6 +47,13 @@ async function load(pageNo,range='all',limit='5') {
   try {
     const res = await getExpense(pageNo,range,limit); // This returns all expenses
     paginationData = res.data.data;
+    if(paginationData.content.length===0 && page!=1){
+      page=page-1;
+    if(leaderboardOn){
+      leaderBoardButton.click();
+    }
+      load(page,range,limit);
+    }
     showExpenses(paginationData.content);
     showPagination(paginationData);
     rangeHeading.textContent = `Showing: ${range.toUpperCase()} Expenses`;
@@ -157,10 +164,10 @@ form.addEventListener('submit',async (event)=>{
     try{
     const addedExpense = await postExpense(expense);
     display(addedExpense.data);
-    load(page,currentRange);
+    load(page,currentRange,limit);
     // form.reset();
-    if(leaderboardOn){
-    window.location.reload();//because leaderboard will also change
+     if(leaderboardOn){
+      leaderBoardButton.click();
     }
   }
   catch(err){
@@ -185,6 +192,9 @@ async function deleteExpense(newExpense,singleExpense){
     await axios.delete(`${REST_API}/${newExpense.id}`,{
         headers:{'Authorization':token}
     });
+    if(leaderboardOn){
+      leaderBoardButton.click();
+    }
     singleExpense.remove();
     load(page,currentRange,limit); 
     }
