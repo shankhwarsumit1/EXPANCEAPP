@@ -17,6 +17,8 @@ const forgotpassword = async (req, res) => {
         }
         let testAccount = await nodemailer.createTestAccount();
         //connect with the smtp
+        console.log(process.env.USER, process.env.APP_PASSWORD);
+
         const newUUID = uuidv4();
         await forgotPasswordRequestsModel.create({
             id:newUUID ,
@@ -24,21 +26,26 @@ const forgotpassword = async (req, res) => {
             isactive:true
         })
         const transporter = nodemailer.createTransport({
-            host: 'smtp.ethereal.email',
+            service:'gmail',
+            host: 'smtp.gmail.com',
             port: 587,
+            secure:false,
             auth: {
-                user: 'grayson.wintheiser@ethereal.email',
-                pass: 'ttnCCkGaMhTAZN5aSN'
-            }
+                user: process.env.USER, // Sender gmail address
+                pass: process.env.APP_PASSWORD, // app password from gmail account
+            },
         });
 
 
         const info = await transporter.sendMail({
-            from: `"sumit shankhwar" <shankhwarsumit117@gmail.com>`,
+            from: {
+              name: 'SUMIT',
+              address: process.env.USER
+            },
             to: `${usermail}`,
             subject: "forgot password",
             text: `http://localhost:3000/password/resetpassword/${newUUID}`,
-            html: `<b>reset password link</b>`,
+            html: `http://localhost:3000/password/resetpassword/${newUUID}`,
         });
 
         console.log("Message sent: ", info.messageId);

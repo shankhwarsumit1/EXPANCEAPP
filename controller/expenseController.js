@@ -3,7 +3,8 @@ const expenseModel = require('../models/expenceModel');
 const sequelize = require('../utils/db-connection');
 const {Op} = require('sequelize');
 const addExpense = async (req,res)=>{
-    try{const transaction = await sequelize.transaction(); 
+    let transaction;
+    try{transaction = await sequelize.transaction(); 
         const {amount,description,note,category}=req.body;
          const user = await userModel.findByPk(req.user.id);
          const addedExpense = await expenseModel.create({amount,description,note,category,userId: req.user.id},{transaction});
@@ -17,7 +18,7 @@ const addExpense = async (req,res)=>{
     }
     catch(err){
         console.log(err);
-        await transaction.rollback();
+        if(transaction)await transaction.rollback();
         res.status(500).send('inernal server error');
         }
     }
