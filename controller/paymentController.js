@@ -49,7 +49,7 @@ exports.getPaymentstatus = async(req,res) =>{
        order.userId = req.user.id;
        await order.save();
        if(orderStatus==='Success'){
-         await userModel.update(
+         await userModel.update(     // making user premium
             {isPremium:true},
            {where:{id:req.user.id}}
          )

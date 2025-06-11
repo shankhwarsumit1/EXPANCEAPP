@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-const securityKey = 'sumit';
 
 
 const authenticate = async(req,res,next) => {
@@ -13,7 +12,7 @@ const authenticate = async(req,res,next) => {
             });
         }
         console.log(token);
-        const decoded = jwt.verify(token,'sumit');
+        const decoded = jwt.verify(token,process.env.SECURITY_KEY);
         console.log(decoded);
         const user = await User.findByPk(decoded.userId);
         if(!user){

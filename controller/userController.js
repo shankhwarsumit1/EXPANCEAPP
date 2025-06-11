@@ -1,10 +1,9 @@
 const userModel = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
-const securityKey = 'sumit';
 
 function generateAccessToken(id,name){
-  return jwt.sign({userId : id, name:name},securityKey);
+  return jwt.sign({userId : id, name:name},process.env.SECURITY_KEY);
 }
 
 const signup = async (req, res) => {
