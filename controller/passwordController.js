@@ -17,7 +17,6 @@ const forgotpassword = async (req, res) => {
         }
         let testAccount = await nodemailer.createTestAccount();
         //connect with the smtp
-        console.log(process.env.USER, process.env.APP_PASSWORD);
 
         const newUUID = uuidv4();
         await forgotPasswordRequestsModel.create({
