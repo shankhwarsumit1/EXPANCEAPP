@@ -18,6 +18,7 @@ const pagination = document.getElementById('pagination');
 const expensesPerPage = document.getElementById('expensesPerPage');
 const firstExp=document.getElementById('firstExp');
 const rangeSelectHeading = document.getElementById('rangeSelectHeading');
+const downloadedHeading = document.getElementById('downloadedHeading');
 
 let isExp = false;
 let currentRange = 'all';
@@ -37,8 +38,22 @@ expensesPerPage.value='5';
         downloadBtn.hidden = false;
         leaderboard.hidden=false;
         rangeSelectHeading.hidden=false;
+
         document.getElementById('premiumHeading').hidden = false;
         document.getElementById('rangeSelect').hidden = false;
+    
+    const downloadedRes = await axios.get('http://localhost:3000/premium/downloadedfiles',{
+      headers:{
+        Authorization:token
+      }
+    })
+    if(downloadedRes.data.success){
+      downloadedHeading.hidden=false;
+         downloadedRes.data.data.forEach((content)=>{
+         displayLinks(content.url);
+         });
+    }
+
        }
     }
     catch(err){
@@ -51,7 +66,6 @@ async function load(pageNo,range='all',limit='5') {
   try {
     const res = await getExpense(pageNo,range,limit); // This returns all expenses
     paginationData = res.data.data;
-
     if(paginationData.content.length===0 && page!=1){
       page=page-1;
     if(leaderboardOn){
@@ -102,30 +116,28 @@ downloadBtn.addEventListener('click',async(e)=>{
 try{
    const res = await axios.get('http://localhost:3000/expense/download',{
     headers:{'Authorization':token},
-    responseType:'blob'
    })
-//responseType: 'blob' makes Axios treat the server response as a file (not JSON or text).
-// So, res.data becomes a Blob object, which holds binary data (e.g., CSV content).
-   const blob = new Blob([res.data],{type:'text/csv'});
-   const url = window.URL.createObjectURL(blob);
-//It creates a temporary downloadable link from your file (blob).
-   const a = document.createElement('a');
-   a.href = url;
-// You attach that temporary shelf link to the anchor.
-   a.download='expenses.csv';
-//You tell the browser:
-//“When the user clicks this anchor, don’t open it — download it as a file with this name.”
+   console.log(res.data.fileURL);
+   var a = document.createElement('a');
+   a.href = res.data.fileURL;
+   a.download = 'myExpense.txt';
    a.click();
-//You simulate a user clicking that anchor, triggering the download.
-//<a href="..." download="expenses.csv">Click Me</a>
-   window.URL.revokeObjectURL(url);
-//Finally, clean up that temporary file link from memory.
+   displayLinks(res.data.fileURL);
+
 }
 catch(err){
     console.log(err);
 }
 });
 
+function displayLinks(fileURL){
+  downloadedHeading.hidden=false;
+   var a = document.createElement('a');
+   a.href = fileURL;
+   a.download = 'myExpense.txt';
+   a.innerHTML=`${fileURL}\n`;
+   document.getElementById('downloaded').appendChild(a);
+}
 
 //display leaders on leaderboard button click
 leaderBoardButton.addEventListener('click',async(e)=>{
@@ -175,7 +187,6 @@ form.addEventListener('submit',async (event)=>{
     }
     try{
     const addedExpense = await postExpense(expense);
-    console.log(addedExpense);
     console.log(expense);
     display(addedExpense.data);
     load(page,currentRange,limit);

@@ -40,6 +40,49 @@ h2 {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+/* Downloaded files section styling */
+#downloaded {
+  max-width: 700px;
+  margin: 2rem auto;
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+#downloadedHeading {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #2c3e50;
+}
+
+#downloaded a {
+  display: block;
+  padding: 0.75rem 1rem;
+  margin: 0.5rem 0;
+  background: #ecf0f1;
+  border-radius: 6px;
+  color: #2980b9;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s;
+
+  /* NEWLY ADDED */
+  word-break: break-all;       
+  overflow-wrap: break-word;   
+  white-space: normal;        
+  max-width: 100%;            
+  box-sizing: border-box;      
+}
+
+
+#downloaded a:hover {
+  background: #d4e6f1;
+  color: #1c5980;
+}
+
+
 .form-container label {
   display: block;
   margin: 0.5rem 0 0.25rem;
