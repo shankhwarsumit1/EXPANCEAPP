@@ -7,7 +7,7 @@
         document.getElementById('renderBtn').addEventListener("click",async(e)=>{
             e.preventDefault();
             try{
-                const response = await fetch("http://localhost:3000/payment/pay",{
+                const response = await fetch("http://13.233.121.238:80/payment/pay",{
                 method:"post",
                 headers:{'Authorization':token}
             });
@@ -36,7 +36,7 @@
             console.log("Payment has been completed, Check for Payment Status");
             console.log(result.paymentDetails.paymentMessage);
             
-            const response = await fetch(`http://localhost:3000/payment/payment-status/${orderId}}`,{
+            const response = await fetch(`http://13.233.121.238:80/payment/payment-status/${orderId}}`,{
                 method:"GET",
                 headers:{'Authorization':token}
             })

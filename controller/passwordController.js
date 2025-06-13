@@ -25,13 +25,13 @@ const forgotpassword = async (req, res) => {
             isactive:true
         })
         const transporter = nodemailer.createTransport({
-            service:'gmail',
-            host: 'smtp.gmail.com',
+            host: "smtp-relay.brevo.com",
             port: 587,
             secure:false,
             auth: {
-                user: process.env.USER, // Sender gmail address
-                pass: process.env.APP_PASSWORD, // app password from gmail account
+                user: process.env.BREVO_USER,
+                pass: process.env.BREVO_SMTP_KEY,
+
             },
         });
 
@@ -39,13 +39,14 @@ const forgotpassword = async (req, res) => {
         const info = await transporter.sendMail({
             from: {
               name: 'SUMIT',
-              address: process.env.USER
+              address: `<shankhwarsumit117@gmail.com>`
+
             },
             to: `${usermail}`,
             subject: "forgot password",
-            text: `http://localhost:3000/password/resetpassword/${newUUID}`,
-            html: `http://localhost:3000/password/resetpassword/${newUUID}`,
-        });
+            text: `http://13.233.121.238:80/password/resetpassword/${newUUID}`,
+            html: `<a href="http://13.233.121.238:80/password/resetpassword/${newUUID}>reset</a>`
+  });
 
         console.log("Message sent: ", info.messageId);
 

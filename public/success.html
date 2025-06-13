@@ -53,7 +53,7 @@
     if (!orderId) {
       document.getElementById("status").innerText = "Missing order ID.";
     } else {
-      fetch(`http://localhost:3000/payment/payment-status/${orderId}`, {
+      fetch(`http://13.233.121.238:80//payment/payment-status/${orderId}`, {
         method: "GET",
         headers: { 'Authorization': token }
       })

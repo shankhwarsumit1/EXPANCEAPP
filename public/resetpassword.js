@@ -9,7 +9,7 @@ window.addEventListener('DOMContentLoaded',(e)=>{
         try{
         const uuid = window.location.pathname.split('/').pop();
         const obj = {newpassword:password.value};
-        const ans = await axios.put(`http://localhost:3000/password/updatepassword/${uuid}`,obj);
+        const ans = await axios.put(`http://13.233.121.238:80/password/updatepassword/${uuid}`,obj);
         message.textContent = "Password reset successful! Redirecting to login page...";
         message.style.display = "block";
 

@@ -1,7 +1,7 @@
 window.addEventListener('DOMContentLoaded',()=>{
 
     const form = document.querySelector('form');
-    const REST_API = "http://localhost:3000/user/signup"
+    const REST_API = "http://13.233.121.238:80/user/signup"
     form.addEventListener('submit',async(event)=>{
         event.preventDefault()
         try{

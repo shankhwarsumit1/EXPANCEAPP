@@ -2,7 +2,7 @@
 window.addEventListener('DOMContentLoaded',(e)=>{
     e.preventDefault()
 let leaderboardOn = false;
-const REST_API = "http://localhost:3000/expense/addExpense";
+const REST_API = "http://13.233.121.238:80/expense/addExpense";
 const form = document.querySelector('form');
 const expenseList = document.querySelector('#expense-list');
 const token = localStorage.getItem('token');
@@ -29,7 +29,7 @@ let paginationData=[];
 expensesPerPage.value='5';
 (async()=>{
     try{
-       const res = await axios.get(`http://localhost:3000/expense/isPremium`,{
+       const res = await axios.get(`http://13.233.121.238:80/expense/isPremium`,{
         headers:{'Authorization':token}
        });
        if(res.data.isPremium){
@@ -42,7 +42,7 @@ expensesPerPage.value='5';
         document.getElementById('premiumHeading').hidden = false;
         document.getElementById('rangeSelect').hidden = false;
     
-    const downloadedRes = await axios.get('http://localhost:3000/premium/downloadedfiles',{
+    const downloadedRes = await axios.get('http://13.233.121.238:80/premium/downloadedfiles',{
       headers:{
         Authorization:token
       }
@@ -114,7 +114,7 @@ expensesPerPage.addEventListener('change',(e)=>{
 
 downloadBtn.addEventListener('click',async(e)=>{
 try{
-   const res = await axios.get('http://localhost:3000/expense/download',{
+   const res = await axios.get('http://13.233.121.238:80/expense/download',{
     headers:{'Authorization':token},
    })
    console.log(res.data.fileURL);
@@ -154,7 +154,7 @@ leaderBoardButton.addEventListener('click',async(e)=>{
       else{
       leaderboardOn=true;
       leaderHeading.hidden=false;
-       const res = await axios.get('http://localhost:3000/premium/showLeaderBoard');
+       const res = await axios.get('http://13.233.121.238:80/premium/showLeaderBoard');
        res.data.forEach((lead)=>{
         displayLeaderboard(lead);
        });}
@@ -249,7 +249,7 @@ catch(err){
 
 async function getExpense(pageNo,range='all',limit='5') {
     try{
-           const res = await axios.get(`http://localhost:3000/expense/addExpense?page=${pageNo}&range=${range}&limit=${limit}`,{
+           const res = await axios.get(`http://13.233.121.238:80/expense/addExpense?page=${pageNo}&range=${range}&limit=${limit}`,{
             headers:{'Authorization':token}
            });
            return res;
