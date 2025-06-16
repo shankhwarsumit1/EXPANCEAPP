@@ -2,7 +2,9 @@
 window.addEventListener('DOMContentLoaded',(e)=>{
     e.preventDefault()
 let leaderboardOn = false;
-const REST_API = "http://13.233.121.238:80/expense/addExpense";
+// const REST_API = "http://13.233.121.238:80/expense/addExpense";
+const REST_API = process.env.API_BASE;
+
 const form = document.querySelector('form');
 const expenseList = document.querySelector('#expense-list');
 const token = localStorage.getItem('token');
@@ -29,7 +31,7 @@ let paginationData=[];
 expensesPerPage.value='5';
 (async()=>{
     try{
-       const res = await axios.get(`http://13.233.121.238:80/expense/isPremium`,{
+       const res = await axios.get(`${REST_API}/expense/isPremium`,{
         headers:{'Authorization':token}
        });
        if(res.data.isPremium){
@@ -42,7 +44,7 @@ expensesPerPage.value='5';
         document.getElementById('premiumHeading').hidden = false;
         document.getElementById('rangeSelect').hidden = false;
     
-    const downloadedRes = await axios.get('http://13.233.121.238:80/premium/downloadedfiles',{
+    const downloadedRes = await axios.get(`${REST_API}/premium/downloadedfiles`,{
       headers:{
         Authorization:token
       }
@@ -114,7 +116,7 @@ expensesPerPage.addEventListener('change',(e)=>{
 
 downloadBtn.addEventListener('click',async(e)=>{
 try{
-   const res = await axios.get('http://13.233.121.238:80/expense/download',{
+   const res = await axios.get(`${REST_API}/expense/download`,{
     headers:{'Authorization':token},
    })
    console.log(res.data.fileURL);
@@ -154,7 +156,7 @@ leaderBoardButton.addEventListener('click',async(e)=>{
       else{
       leaderboardOn=true;
       leaderHeading.hidden=false;
-       const res = await axios.get('http://13.233.121.238:80/premium/showLeaderBoard');
+       const res = await axios.get(`${REST_API}/premium/showLeaderBoard`);
        res.data.forEach((lead)=>{
         displayLeaderboard(lead);
        });}
@@ -222,7 +224,7 @@ const leaderList = document.getElementById('rangeHeading').hidden=false;
 
 async function deleteExpense(newExpense,singleExpense){
     try{
-    await axios.delete(`${REST_API}/${newExpense.id}`,{
+    await axios.delete(`${REST_API}/expense/${newExpense.id}`,{
         headers:{'Authorization':token}
     });
     if(leaderboardOn){
@@ -238,7 +240,7 @@ async function deleteExpense(newExpense,singleExpense){
 
 async function postExpense(expense){
 try{
-      const res = await axios.post(REST_API,expense,{
+      const res = await axios.post(`${REST_API}/expense/addExpense`,expense,{
         headers:{Authorization:token}
       });
       return res;
@@ -249,7 +251,7 @@ catch(err){
 
 async function getExpense(pageNo,range='all',limit='5') {
     try{
-           const res = await axios.get(`http://13.233.121.238:80/expense/addExpense?page=${pageNo}&range=${range}&limit=${limit}`,{
+           const res = await axios.get(`${REST_API}/expense/addExpense?page=${pageNo}&range=${range}&limit=${limit}`,{
             headers:{'Authorization':token}
            });
            return res;

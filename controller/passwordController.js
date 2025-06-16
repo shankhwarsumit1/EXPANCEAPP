@@ -44,8 +44,8 @@ const forgotpassword = async (req, res) => {
             },
             to: `${usermail}`,
             subject: "forgot password",
-            text: `http://13.233.121.238:80/password/resetpassword/${newUUID}`,
-            html: `<a href="http://13.233.121.238:80/password/resetpassword/${newUUID}>reset</a>`
+            text: `${process.env.API_BASE}/password/resetpassword/${newUUID}`,
+            html: `${process.env.API_BASE}/password/resetpassword/${newUUID}>reset</a>`
   });
 
         console.log("Message sent: ", info.messageId);

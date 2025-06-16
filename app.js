@@ -10,7 +10,7 @@ const passwordRouter = require('./router/passwordRouter');
 require('./models');
 const cors = require('cors');
 const app = express();
-app.use(cors());
+app.use(cors()); //cross origin resourse sharing
 app.use(express.json());
 app.use(express.static('public'));
 
