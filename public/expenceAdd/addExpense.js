@@ -3,7 +3,7 @@ window.addEventListener('DOMContentLoaded',(e)=>{
     e.preventDefault()
 let leaderboardOn = false;
 // const REST_API = "http://13.233.121.238:80/expense/addExpense";
-const REST_API = process.env.API_BASE;
+const REST_API = API_BASE;
 
 const form = document.querySelector('form');
 const expenseList = document.querySelector('#expense-list');
@@ -224,7 +224,7 @@ const leaderList = document.getElementById('rangeHeading').hidden=false;
 
 async function deleteExpense(newExpense,singleExpense){
     try{
-    await axios.delete(`${REST_API}/expense/${newExpense.id}`,{
+    await axios.delete(`${REST_API}/expense/addExpense/${newExpense.id}`,{
         headers:{'Authorization':token}
     });
     if(leaderboardOn){

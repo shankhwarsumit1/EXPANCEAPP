@@ -7,7 +7,7 @@
         document.getElementById('renderBtn').addEventListener("click",async(e)=>{
             e.preventDefault();
             try{
-                const response = await fetch(`${process.env.API_BASE}/payment/pay`,{
+                const response = await fetch(`${API_BASE}/payment/pay`,{
                 method:"post",
                 headers:{'Authorization':token}
             });
@@ -36,7 +36,7 @@
             console.log("Payment has been completed, Check for Payment Status");
             console.log(result.paymentDetails.paymentMessage);
             
-            const response = await fetch(`${process.env.API_BASE}/payment/payment-status/${orderId}`,{
+            const response = await fetch(`${API_BASE}/payment/payment-status/${orderId}`,{
                 method:"GET",
                 headers:{'Authorization':token}
             })

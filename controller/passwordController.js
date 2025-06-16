@@ -15,8 +15,6 @@ const forgotpassword = async (req, res) => {
         if(!user){
             return res.status(404).json({'error':"invalid email"});
         }
-        let testAccount = await nodemailer.createTestAccount();
-        //connect with the smtp
 
         const newUUID = uuidv4();
         await forgotPasswordRequestsModel.create({

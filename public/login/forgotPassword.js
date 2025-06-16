@@ -3,7 +3,7 @@ window.addEventListener('DOMContentLoaded',(e)=>{
     form = document.getElementById('forgotform');
     const emailInput = document.getElementById('forgot-email');
     const message = document.getElementById('message');
-    const REST_API = process.env.API_BASE;
+    const REST_API = API_BASE;
     form.addEventListener('submit',async(e)=>{
         try{ e.preventDefault();
            message.innerText = "Wait for few seconds";

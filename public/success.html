@@ -44,7 +44,7 @@
     <h2>Checking your payment status...</h2>
     <p id="status">Please wait</p>
   </div>
-
+  <script src="/main.js"></script>
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const orderId = urlParams.get('orderId');
@@ -53,7 +53,7 @@
     if (!orderId) {
       document.getElementById("status").innerText = "Missing order ID.";
     } else {
-      fetch(`${process.env.API_BASE}/payment/payment-status/${orderId}`, {
+      fetch(`${API_BASE}/payment/payment-status/${orderId}`, {
         method: "GET",
         headers: { 'Authorization': token }
       })

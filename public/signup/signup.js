@@ -1,7 +1,7 @@
 window.addEventListener('DOMContentLoaded',()=>{
-
+   console.log(API_BASE);
     const form = document.querySelector('form');
-    const REST_API = `${process.env.API_BASE}/user/signup`
+    const REST_API = `${API_BASE}/user/signup`
     form.addEventListener('submit',async(event)=>{
         event.preventDefault()
         try{

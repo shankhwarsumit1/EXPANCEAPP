@@ -22,7 +22,6 @@ app.use('/password',passwordRouter);
 
 db.sync({force:false}).then(()=>{
     app.listen(process.env.PORT,()=>{
-        console.log('server is running on port 3000');
-        console.log('Hello Open http://13.233.121.238:80/login/login.html in your browser');
+        console.log(`Hello Open ${process.env.API_BASE}/login/login.html in your browser`);
     })
-})
+});
