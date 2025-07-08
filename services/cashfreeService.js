@@ -1,4 +1,4 @@
-    const { Cashfree, CFEnvironment } = require("cashfree-pg");
+  const { Cashfree, CFEnvironment } = require("cashfree-pg");
 
   const cashfree = new Cashfree(CFEnvironment.SANDBOX, 
     process.env.CASHFREE_APIID,
@@ -32,7 +32,7 @@
             "return_url":`${process.env.API_BASE}/success.html?orderId=${orderId}`,
             payment_methods: "ccc, upi, nb"
           },
-          order_expiry_time: formattedExpiryDate, //!? Set the valid expiry date
+          order_expiry_time: formattedExpiryDate, 
         };
 
         const response = await cashfree.PGCreateOrder(request);
@@ -46,7 +46,6 @@
     exports.getPaymentStatus = async (orderId) => {
       try {
   
-        console.log(orderId)
         const response = await cashfree.PGOrderFetchPayments(orderId);
 
         let getOrderResponse = response.data;

@@ -2,12 +2,14 @@
 window.addEventListener('DOMContentLoaded',(e)=>{
     e.preventDefault()
 let leaderboardOn = false;
-// const REST_API = "http://13.233.121.238:80/expense/addExpense";
 const REST_API = API_BASE;
+const token = localStorage.getItem('token');
 
+if(!token){
+  window.location.href='/login/login.html'
+}
 const form = document.querySelector('form');
 const expenseList = document.querySelector('#expense-list');
-const token = localStorage.getItem('token');
 const Buypremium = document.querySelector('#premium');
 const leaderBoardButton = document.getElementById('leaders');
 const leaderList = document.getElementById('leaderList');
@@ -66,7 +68,7 @@ expensesPerPage.value='5';
 //shows all expenses on reloading 
 async function load(pageNo,range='all',limit='5') {
   try {
-    const res = await getExpense(pageNo,range,limit); // This returns all expenses
+    const res = await getExpense(pageNo,range,limit); 
     paginationData = res.data.data;
     if(paginationData.content.length===0 && page!=1){
       page=page-1;
@@ -100,10 +102,8 @@ function showExpenses(expenses) {
 }
 
 rangeSelect.addEventListener('change',(e) => {
-  // rangeHeading.textContent = `Showing: ${range.toUpperCase()} Expenses`;
   e.preventDefault();
   currentRange = rangeSelect.value || 'all';
-  console.log(currentRange);
   page=1;
   load(page,currentRange,limit);
 });
@@ -119,7 +119,7 @@ try{
    const res = await axios.get(`${REST_API}/expense/download`,{
     headers:{'Authorization':token},
    })
-   console.log(res.data.fileURL);
+
    var a = document.createElement('a');
    a.href = res.data.fileURL;
    a.download = 'myExpense.txt';
@@ -156,7 +156,9 @@ leaderBoardButton.addEventListener('click',async(e)=>{
       else{
       leaderboardOn=true;
       leaderHeading.hidden=false;
-       const res = await axios.get(`${REST_API}/premium/showLeaderBoard`);
+       const res = await axios.get(`${REST_API}/premium/showLeaderBoard`,{
+    headers:{'Authorization':token},
+   });
        res.data.forEach((lead)=>{
         displayLeaderboard(lead);
        });}
@@ -189,10 +191,10 @@ form.addEventListener('submit',async (event)=>{
     }
     try{
     const addedExpense = await postExpense(expense);
-    console.log(expense);
     display(addedExpense.data);
     load(page,currentRange,limit);
     // form.reset();
+    
      if(leaderboardOn){
       leaderBoardButton.click();
     }
@@ -264,6 +266,10 @@ async function getExpense(pageNo,range='all',limit='5') {
 async function showPagination({hasNextPage,hasPreviousPage}){
   try{
     pagination.innerHTML='';
+    if(!hasPreviousPage&!hasNextPage){
+      pagination.innerHTML='';
+      return;
+    }
     if(hasPreviousPage){
       const btn= document.createElement('button');
       btn.innerHTML = page-1;

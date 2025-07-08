@@ -7,7 +7,8 @@ const downloadedModel = require('../models/downloadedModel');
 
 const addExpense = async (req,res)=>{
     let transaction;
-    try{transaction = await sequelize.transaction(); 
+    try{
+        transaction = await sequelize.transaction(); 
         const {amount,description,note,category}=req.body;
          const user = await userModel.findByPk(req.user.id);
          const addedExpense = await expenseModel.create({amount,description,note,category,userId: req.user.id},{transaction});
@@ -59,9 +60,9 @@ const getExpense = async (req,res)=>{
         }
         else if(range==='weekly'){
             const start = new Date(now);
-            start.setDate(start.getDate()-start.getDay());
+            start.setDate(start.getDate()-start.getDay());//sunday of current week
             start.setHours(0,0,0,0);
-            const end = new Date(start);//sunday of current week
+            const end = new Date(start);
             end.setDate(end.getDate()+6);
             end.setHours(23,59,59,999);
             dataFilter = {

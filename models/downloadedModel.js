@@ -1,15 +1,20 @@
-const {DataTypes} = require('sequelize');
-const sequelize = require('../utils/db-connection');
+const mongoose = require('mongoose');
 
-const downloadedModel = sequelize.define('filesDownloaded',{
+const downloadedSchema = new mongoose.Schema({
     userId:{
-        type:DataTypes.INTEGER,
-        allowNull:false
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Users",
+        require:true
     },
     url:{
-        type:DataTypes.STRING,
-        allowNull:false
+        type:String,
+        require:true,
     }
-})
+},{timestamps:true})
+
+const downloadedModel = new mongoose.model(
+    "download",
+    downloadedSchema
+)
 
 module.exports = downloadedModel;

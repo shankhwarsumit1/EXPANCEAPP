@@ -1,6 +1,5 @@
 const userModel = require('../models/user');
 const downloadedModel = require('../models/downloadedModel');
-const {fn,col,literal} =require('sequelize');
 
 const showLeaderBoard = async(req,res)=>{
     try{
@@ -16,7 +15,6 @@ const showLeaderBoard = async(req,res)=>{
 
 const getDownloadedFiles = async(req,res)=>{
     try{
-        console.log(req.user.id);
        const response = await downloadedModel.findAll({where:{userId:req.user.id}});
        if(!res){
         return res.status(404).json({success:false,error:'404 not found'});

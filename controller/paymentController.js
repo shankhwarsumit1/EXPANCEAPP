@@ -40,7 +40,7 @@ exports.getPaymentstatus = async(req,res) =>{
     const orderId = req.params.orderId;
     try{
         const order = await paymentModel.findOne({where:{orderId}});
-        console.log(order);
+
         if(!order){
             return res.status(404).json({message:"order not found"});
         }

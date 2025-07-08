@@ -1,10 +1,7 @@
-const userModel = require('../models/user');
+const User = require('../models/user');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken')
+const User = require('../models/user');
 
-function generateAccessToken(id,name){
-  return jwt.sign({userId : id, name:name},process.env.SECURITY_KEY);
-}
 
 const signup = async (req, res) => {
   try {
@@ -14,11 +11,11 @@ const signup = async (req, res) => {
       password
     } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
-    await userModel.create({
-      name,
+    const user = new User({ name,
       email,
-      password: hashedPassword
-    });
+      password: hashedPassword})
+    await user.save();
+
     res.status(201).json({ success: true, message: 'User is added' });
   } catch (err) {
     console.log(err);
@@ -29,19 +26,19 @@ const signup = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await userModel.findOne({ where: { email } });
+    const user = await User.findOne({ where: { email } });
     if (!user) {
       return res.status(404).json({
         success: false,
         message: 'user not found'
       });
     }
-    const result = await bcrypt.compare(password, user.password);
-    if (result) {
+    const isPasswodValid = await User.validatePassword(password);
+    if (isPasswodValid) {
       res.status(200).json({
         success: true,
         message: "user login successfull",
-        token: generateAccessToken(user.id,user.name),
+        token: await User.getJWT(),
       });
     } else {
       res.status(401).json({

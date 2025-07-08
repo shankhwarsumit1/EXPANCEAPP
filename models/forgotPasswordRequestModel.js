@@ -1,17 +1,21 @@
-const {DataTypes} = require('sequelize');
-const sequalize = require('../utils/db-connection');
-const forgotpasswordRequestsModel = sequalize.define('ForgotPasswordRequest',{
-    id:{
-        type:DataTypes.STRING,
-        primaryKey:true
-    },
+const mongoose = require('mongoose');
+
+
+const forgotpasswordRequestsSchema = new mongoose({
     userId:{
-        type:DataTypes.INTEGER
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Users",
+        require:true
     },
     isactive:{
-        type:DataTypes.BOOLEAN,
-        defaultValue:false
+        type:Boolean,
+        default:false
     }
 })
+
+const forgotpasswordRequestsModel = new mongoose.model(
+    "forgotpasswordRequest",
+    forgotpasswordRequestsSchema
+)
 
 module.exports = forgotpasswordRequestsModel;

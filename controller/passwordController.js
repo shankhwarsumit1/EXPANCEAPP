@@ -43,7 +43,8 @@ const forgotpassword = async (req, res) => {
             to: `${usermail}`,
             subject: "forgot password",
             text: `${process.env.API_BASE}/password/resetpassword/${newUUID}`,
-            html: `${process.env.API_BASE}/password/resetpassword/${newUUID}>reset</a>`
+            html: `${process.env.API_BASE}/password/resetpassword/${newUUID}`
+
   });
 
         console.log("Message sent: ", info.messageId);
@@ -90,7 +91,7 @@ const updatePassword=async(req,res)=>{
 
          const {userId} = resetRequest;
          resetRequest.isactive=false;
-         await resetRequest.save({transaction})
+         await resetRequest.save({transaction});
          const user = await userModel.findByPk(userId);
 
          if (!user) {
