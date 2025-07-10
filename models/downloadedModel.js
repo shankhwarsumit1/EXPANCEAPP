@@ -4,11 +4,11 @@ const downloadedSchema = new mongoose.Schema({
     userId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Users",
-        require:true
+        required:true
     },
     url:{
         type:String,
-        require:true,
+        required:true,
     }
 },{timestamps:true})
 

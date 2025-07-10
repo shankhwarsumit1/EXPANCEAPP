@@ -9,13 +9,13 @@ const authenticate = async(req,res,next) => {
             return res.status(401).json({success:false,
                 message:'Token not provided'
             });
-        }
+        } 
   
         const decoded = jwt.verify(token,process.env.SECURITY_KEY);
 
-        const user = await User.findByPk(decoded._id);
+        const user = await User.findById(decoded._id);
         if(!user){
-            res.status(401).json({success:false,message:'User not found'});
+           return res.status(401).json({success:false,message:'User not found'});
         }
 
         req.user = user;

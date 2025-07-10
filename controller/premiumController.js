@@ -3,9 +3,8 @@ const downloadedModel = require('../models/downloadedModel');
 
 const showLeaderBoard = async(req,res)=>{
     try{
-    const results = await userModel.findAll({order:[['totalExpense','DESC']]});
+    const results = await userModel.find({},"name totalExpense").sort({totalExpense:-1});
     res.status(200).json(results);
-
     }
     catch(error){
         console.log(error.message);
@@ -13,10 +12,11 @@ const showLeaderBoard = async(req,res)=>{
     }
 };
 
+
 const getDownloadedFiles = async(req,res)=>{
     try{
-       const response = await downloadedModel.findAll({where:{userId:req.user.id}});
-       if(!res){
+       const response = await downloadedModel.find({userId:req.user._id});
+       if(response.length===0){
         return res.status(404).json({success:false,error:'404 not found'});
        }
        res.status(200).json({success:true,data:response});

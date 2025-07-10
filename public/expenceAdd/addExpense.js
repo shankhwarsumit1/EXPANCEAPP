@@ -226,7 +226,7 @@ const leaderList = document.getElementById('rangeHeading').hidden=false;
 
 async function deleteExpense(newExpense,singleExpense){
     try{
-    await axios.delete(`${REST_API}/expense/addExpense/${newExpense.id}`,{
+    await axios.delete(`${REST_API}/expense/addExpense/${newExpense._id}`,{
         headers:{'Authorization':token}
     });
     if(leaderboardOn){

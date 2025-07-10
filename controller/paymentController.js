@@ -1,18 +1,17 @@
 
 const {createOrder,getPaymentStatus} = require('../services/cashfreeService');
 const paymentModel = require('../models/paymentModel');
-const userModel = require('../models/user');
 
 exports.processPayment = async (req,res)=>{
 const orderId = "ORDER-"+ Date.now();
 const orderAmount = 2000;
 const orderCurrency =  "INR";
-const customerId = `${req.user.id}`;
+const customerId = `${req.user._id}`;
 const customerPhone = "7355467233";
 
 try{
 const paymentSessionId = await createOrder(
-    orderId,orderAmount,orderCurrency,customerId,customerPhone,
+    orderId,orderAmount,orderCurrency,customerId,customerPhone
 );
 
 if (!paymentSessionId) {
@@ -25,7 +24,7 @@ await paymentModel.create({
     orderAmount,
     orderCurrency,
     paymentStatus:"Pending",
-    customerId});
+    userId:customerId});
 
 res.status(201).json({paymentSessionId,orderId});
 }
@@ -39,20 +38,21 @@ res.status(500).json({message:"error processing payment"});
 exports.getPaymentstatus = async(req,res) =>{
     const orderId = req.params.orderId;
     try{
-        const order = await paymentModel.findOne({where:{orderId}});
+        const order = await paymentModel.findOne({orderId},"orderId userId paymentStatus")
+        .populate("userId","isPremium");
 
         if(!order){
             return res.status(404).json({message:"order not found"});
         }
        const orderStatus = await getPaymentStatus(order.orderId);
+       console.log("DEBUG: getPaymentStatus returned:", orderStatus);
+
        order.paymentStatus = orderStatus;
-       order.userId = req.user.id;
        await order.save();
        if(orderStatus==='Success'){
-         await userModel.update(     // making user premium
-            {isPremium:true},
-           {where:{id:req.user.id}}
-         )
+         const user = order.userId;
+         user.isPremium=true;
+         await user.save();
        }
        res.json({orderStatus});
     }

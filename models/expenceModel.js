@@ -13,7 +13,7 @@ const expenceSchema = new mongoose.Schema({
         type:String,
     },
     userId:{
-        type:Number,
+        type:mongoose.Schema.Types.ObjectId,
          required:[true,'userId is mandatory'],
          ref:"Users"
     },

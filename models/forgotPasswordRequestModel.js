@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 
-const forgotpasswordRequestsSchema = new mongoose({
+const forgotpasswordRequestsSchema = new mongoose.Schema({
     userId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Users",
-        require:true
+        required:true
     },
     isactive:{
         type:Boolean,

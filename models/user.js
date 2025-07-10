@@ -1,19 +1,19 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-const jwt = requie('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
     name:{
         type:String,
-        require:[true,'why no name'],
+        required:[true,'why no name'],
         minLength:2,
         maxLength:50,
         trim:true
     },
     email:{
         type:String,
-        require:[true,'why no email'],
+        required:[true,'why no email'],
         unique:true,
         trim:true,
         validate(value){
@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
     },
     password:{
         type:String,
-        require:[true,'why no password'],
+        required:[true,'why no password'],
     },
     isPremium:{
         type:Boolean,
@@ -32,14 +32,14 @@ const userSchema = new mongoose.Schema({
     },
     totalExpense:{
         type:Number,
-        defaultValue:0
+        default:0
     }
 },{
     timestamps:true,
 })
 
 userSchema.methods.getJWT=async function(){
-    const token = await jwt.sign({_id:this.id},process.env.SECRET_KEY);
+    const token = await jwt.sign({_id:this._id},process.env.SECURITY_KEY);
     return token;
 }
 

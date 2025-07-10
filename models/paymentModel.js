@@ -1,27 +1,31 @@
 const mongoose = require('mongoose');
 
 const paymentSchema = new mongoose.Schema({
+      orderId:{
+        type:String,
+        required:true,
+    },
     paymentSessionId:{
         type:String,
-        require:true,
+        required:true,
 
     },
     orderAmount:{
         type:Number,
-        require:true,
+        required:true,
     },
     orderCurrency:{
         type:String,
-        require:true,
+        required:true,
     },
     paymentStatus:{
         type:String,
-        require:true,
+        required:true,
     },
     userId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Users',
-        require:true
+        required:true
     }
 },{timestamps:true});
 

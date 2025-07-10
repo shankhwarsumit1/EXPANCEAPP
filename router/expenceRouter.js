@@ -7,6 +7,6 @@ router = express.Router();
 router.post('/addExpense',authenticate,expenseController.addExpense);
 router.get('/addExpense',authenticate,expenseController.getExpense);
 router.get('/isPremium',authenticate,expenseController.isPremium);
-router.delete('/addExpense/:id',authenticate,expenseController.delExpense);
+router.delete('/addExpense/:_id',authenticate,expenseController.delExpense);
 router.get('/download',authenticate,expenseController.downloadExpense);
 module.exports=router;
